@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    
+    
+        <meta name="keywords" content="博客, web前端, JavaScript, css, html, 编程, 程序, lecoler, 问题,">
+    
+    
+        <meta name="description" content="lecoler的个人博客，用于记录web前端以及实际开发中遇到的问题及解决方案，还会有各种开发优化方案及疑难杂症">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>
+        mpvue 踩坑历程 |
+        
+        lecoler博客</title>
+    
+        <link rel="shortcut icon" href="/favicon.ico">
+    
+    <link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/css/style.css">
+    
+        <link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+    
+    
+        <script src="https://hm.baidu.com/hm.js?62da0995840f7bcdbd4e141a4bb18192"></script>
+    
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/pace.min.js"></script>
+</head>
+
+</html>
+<body>
+
+<main class="content over-hidden" id="main">
+    <section class="outer">
+  <article id="post-mpvue" class="article article-type-post" itemscope
+         itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+  
+    <h1 class="article-title" itemprop="name">
+      mpvue 踩坑历程
+    </h1>
+  
+  
+
+
+
+
+            </header>
+        
+
+        
+            <div class="article-meta">
+                <a href="/2019/09/16/mpvue/" class="article-date">
+  <time datetime="2019-09-16T16:00:00.000Z" itemprop="datePublished">2019-09-17</time>
+</a>
+                
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/前端/">前端</a>
+  </div>
+
+            </div>
+        
+
+        <div class="article-entry" itemprop="articleBody">
+            
+
+            
+
+            
+                <p>开发微信小程序，但迫于原生开发对开发者的不友好，于是使用基于vue开发的mpvue框架开发微信小程序。<br>本文是用于记录本人在使用mpvue时所踩的坑，以及一些经验之谈。  </p>
+<a id="more"></a>
+<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><ul>
+<li>本文用的是 <img src="https://img.shields.io/badge/mpvue-v2.0-brightgreen" alt="mpvue 2.0"> </li>
+<li>npm下载慢？ <a href="https://lecoler.github.io/2019/03/27/npm-cnpm/">点这解决</a><h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><a href="https://github.com/Meituan-Dianping/mpvue" target="_blank" rel="noopener">mpvue</a> 是美团开发的一个使用 <code>Vue.js</code> 开发小程序的前端开源框架。<br>框架基于 <code>Vue.js</code> 核心，mpvue 修改了 <code>Vue.js</code> 的 <code>runtime</code> 和 <code>compiler</code> 实现，<br>使其可以运行在小程序环境中，从而为小程序开发引入了整套 <code>Vue.js</code> 开发体验。<blockquote>
+<p>fork 自 <code>vuejs/vue@2.4.1</code>，保留了 <code>vue runtime</code> 能力</p>
+</blockquote>
+<h4 id="mpvue特性"><a href="#mpvue特性" class="headerlink" title="mpvue特性"></a>mpvue特性</h4></li>
+<li>彻底的组件化开发能力：提高代码复用性</li>
+<li>完整的 <code>Vue.js</code> 开发体验</li>
+<li>方便的 <code>Vuex</code> 数据管理方案：方便构建复杂应用</li>
+<li>快捷的 <code>webpack</code> 构建机制：自定义构建策略、开发阶段 hotReload(热更新)</li>
+<li>支持使用 <code>npm</code> 外部依赖</li>
+<li>使用 <code>Vue.js</code> 命令行工具 <code>vue-cli</code> 快速初始化项目</li>
+<li>H5 代码转换编译成小程序目标代码的能力</li>
+</ul>
+<h4 id="支持平台"><a href="#支持平台" class="headerlink" title="支持平台"></a>支持平台</h4><ul>
+<li>微信小程序</li>
+<li>百度小程序</li>
+<li>支付宝小程序</li>
+<li>头条小程序</li>
+<li>h5</li>
+</ul>
+<h3 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h3><p>安装环境需 <img src="https://img.shields.io/badge/node-%3E=8.9.0-brightgreen" alt="node&gt;=8.9"> <img src="https://img.shields.io/badge/npm-%3E=5.6-blue" alt="npm&gt;=5.6"><br>调试需要对应平台的<code>开发者工具</code></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#安装</span></span><br><span class="line">npm install -g vue-cli@2.9</span><br><span class="line"><span class="comment">#创建</span></span><br><span class="line">vue init mpvue/mpvue-quickstart myApp</span><br><span class="line"><span class="comment">#依赖</span></span><br><span class="line"><span class="built_in">cd</span> myApp</span><br><span class="line">npm install</span><br><span class="line"></span><br><span class="line"><span class="comment">#运行</span></span><br><span class="line">npm run dev</span><br><span class="line">npm run build</span><br></pre></td></tr></table></figure>
+
+<h3 id="new-Page"><a href="#new-Page" class="headerlink" title="new Page"></a>new Page</h3><p>需按特定的格式命名文件(参考现有的文件),以及得在app.json里配置相应路径<br>自定义的话，也可以，不过要改的地方有点多<code>main.js</code>、<code>webpack</code>配置也要改 </p>
+<blockquote>
+<p>e.g:</p>
+<ul>
+<li>pageA<ul>
+<li>index.vue</li>
+<li>main.js(写法固定)</li>
+<li>main.json(官方建议要有，个人感觉可无)</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h3 id="将app-json-page-json写在-vue里"><a href="#将app-json-page-json写在-vue里" class="headerlink" title="将app.json/page.json写在***.vue里"></a>将<code>app.json/page.json</code>写在<code>***.vue</code>里</h3><p>v2.0版本，官方建议<code>app.json/page.json</code>另起一个文件，还要维护多一个文件好麻烦啊，直接写在vue里得了用webpack处理下</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install --save-dev mpvue-config-loader</span><br></pre></td></tr></table></figure>
+
+<p>修改<code>build/webpack.base.conf.js</code>文件</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//module里追加rules，大概在60行左右</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//将js部分的 config字段转化成相应的json文件</span></span><br><span class="line">&#123;</span><br><span class="line">    test: <span class="regexp">/\.vue$/</span>,</span><br><span class="line">    loader: <span class="string">'mpvue-config-loader'</span>,</span><br><span class="line">    exclude: [resolve(<span class="string">'src/components'</span>)],</span><br><span class="line">    options: &#123;</span><br><span class="line">        entry: <span class="string">'./main.js'</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+
+<p>使用  </p>
+<ul>
+<li><p>方式一：可自行生成<code>app.json/main.json</code></p>
+</li>
+<li><p>方式二：在<code>.vue</code>里</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span>&#123;</span><br><span class="line">  config:&#123;</span><br><span class="line">      <span class="string">"navigationBarTitleText"</span>: <span class="string">"练习"</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<blockquote>
+<p>注意：两种方式只能选其一，不然会发生覆盖错误</p>
+</blockquote>
+<h3 id="引入sass"><a href="#引入sass" class="headerlink" title="引入sass"></a>引入sass</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">npm install node-sass sass-loader --save</span><br><span class="line"></span><br><span class="line"><span class="comment">#全局使用sass变量(选装)</span></span><br><span class="line">npm install sass-resources-loader --save</span><br></pre></td></tr></table></figure>
+
+<h4 id="修改webpack配置-使用全局sass时需修改，不使用就不用"><a href="#修改webpack配置-使用全局sass时需修改，不使用就不用" class="headerlink" title="修改webpack配置(使用全局sass时需修改，不使用就不用)"></a>修改webpack配置(使用全局sass时需修改，不使用就不用)</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//build/utils.js文件，大约70行左右</span></span><br><span class="line">scss: generateLoaders(<span class="string">'sass'</span>).concat(&#123;</span><br><span class="line">  loader:<span class="string">'sass-resources-loader'</span>,</span><br><span class="line">    options:&#123;</span><br><span class="line">      resources:path.resolve(__dirname,<span class="string">'../src/libs/base.scss'</span>)  <span class="comment">//这是全局sass的配置文件，路径可随意更改</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;),</span><br></pre></td></tr></table></figure>
+
+<h4 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h4><p>在要使用sass的vue文件里的style标签加上<code>lang=&#39;scss&#39;</code> </p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">lang</span>=<span class="string">"scss"</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Tip:<br>注意 <code>webpack</code> 的版本，<code>webpack</code>版本过低，但安装的 <code>sass</code> 版本过高时可能会出错。安装时，注意报错信息就好了😂<br>附: 本人的安装环境 </p>
+<ul>
+<li>“webpack”: “^3.11.0”,</li>
+<li>“node-sass”: “^4.11.0”,</li>
+<li>“sass-loader”: “^7.1.0”,</li>
+<li>“sass-resources-loader”: “^2.0.0”,</li>
+</ul>
+</blockquote>
+<h3 id="引入vuex"><a href="#引入vuex" class="headerlink" title="引入vuex"></a>引入vuex</h3><p>创建模板时选择vuex，或者自行安装</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install vuex --save</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://lecoler.github.io/2019/06/27/vuex/">vuex的用法</a> 同vue里一样，只是在实例中挂载可能有所区别。<br>方式一：按需引入，在要使用的vue文件里 import 引入  </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//单个vue文件里</span></span><br><span class="line"><span class="keyword">import</span> store <span class="keyword">from</span> <span class="string">'./store'</span></span><br></pre></td></tr></table></figure>
+
+<p>方式二：全局引入，直接挂载到vue的原型链上  </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//main.js</span></span><br><span class="line"><span class="keyword">import</span> store <span class="keyword">from</span> <span class="string">'./store'</span></span><br><span class="line"></span><br><span class="line">Vue.prototype.$store = store</span><br></pre></td></tr></table></figure>
+
+<h3 id="接入微信云函数"><a href="#接入微信云函数" class="headerlink" title="接入微信云函数"></a>接入微信云函数</h3><p>步骤有四     </p>
+<ul>
+<li><p>其一:  在根目录创建个 云函数目录 e.g: <code>cloud</code>   </p>
+</li>
+<li><p>其二:  修改<code>config/index.js</code>配置文件，大概20行左右，找到<code>wx</code>字段里的<code>platform</code>字段，将值改成<code>platform: &#39;wx/miniprogram&#39;</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">  wx: &#123;</span><br><span class="line">  template: <span class="string">'wxml'</span>,</span><br><span class="line">  script: <span class="string">'js'</span>,</span><br><span class="line">  style: <span class="string">'wxss'</span>,</span><br><span class="line">  platform: <span class="string">'wx/miniprogram'</span>,</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>其三:  修改<code>project.config.json</code>微信项目配置文件，新增字段<code>cloudfunctionRoot</code>和修改<code>miniprogramRoot</code>字段  </p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"miniprogramRoot"</span>: <span class="string">"./miniprogram/"</span>,</span><br><span class="line">  <span class="attr">"cloudfunctionRoot"</span>: <span class="string">"./cloud/"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>其四:  修改<code>webpack.base.conf.js</code>webpack配置文件，末尾新增个if，当是微信时打包将<code>云函数目录</code>和<code>config项目配置文件</code>copy过去 </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> PLATFORM = process.env.PLATFORM;</span><br><span class="line"><span class="keyword">if</span> (<span class="regexp">/^(swan)|(tt)$/</span>.test(PLATFORM)) &#123;</span><br><span class="line">  baseWebpackConfig = merge(baseWebpackConfig, &#123;</span><br><span class="line">    plugins: [</span><br><span class="line">      <span class="keyword">new</span> CopyWebpackPlugin([&#123;</span><br><span class="line">        <span class="keyword">from</span>: path.resolve(__dirname, projectConfigMap[PLATFORM]),</span><br><span class="line">        to: path.resolve(config.build.assetsRoot)</span><br><span class="line">      &#125;])</span><br><span class="line">    ]</span><br><span class="line">  &#125;);</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="string">'wx'</span> === PLATFORM) &#123;</span><br><span class="line">  <span class="comment">//云函数</span></span><br><span class="line">  baseWebpackConfig = merge(baseWebpackConfig, &#123;</span><br><span class="line">    plugins: [</span><br><span class="line">      <span class="keyword">new</span> CopyWebpackPlugin([&#123;</span><br><span class="line">        <span class="keyword">from</span>: path.resolve(__dirname, projectConfigMap.tt),</span><br><span class="line">        to: path.resolve(__dirname, <span class="string">'../dist/wx/'</span>)</span><br><span class="line">      &#125;]),</span><br><span class="line">      <span class="keyword">new</span> CopyWebpackPlugin([&#123;</span><br><span class="line">        <span class="keyword">from</span>: path.resolve(__dirname, <span class="string">'../apiCloud'</span>),</span><br><span class="line">        to: path.resolve(__dirname, <span class="string">'../dist/wx/cloud'</span>)</span><br><span class="line">      &#125;])</span><br><span class="line">    ]</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>最后:  run <code>dist/wx</code>目录里出现<code>cloud</code>、<code>miniprogram</code>、<code>project.config.json</code>，就成功了</p>
+<blockquote>
+<p>Tip:  </p>
+<ul>
+<li>云函数的添加方法，编译完了还是得在<code>微信开发者工具</code>里更新提交☹ </li>
+<li><code>project.config.json</code>文件，最好将<code>appid</code>字段填正确，不然每次run <code>project.config.json</code>都会被替换，会提示<code>appid</code>不一致😂  </li>
+</ul>
+</blockquote>
+</li>
+</ul>
+<h3 id="坑😠"><a href="#坑😠" class="headerlink" title="坑😠"></a>坑😠</h3><h4 id="生命周期"><a href="#生命周期" class="headerlink" title="生命周期"></a>生命周期</h4><p>同 vue，不同的是在小程序 <code>onReady</code> 后，再去触发 <code>vue mounted</code> 生命周期  </p>
+<blockquote>
+<p>同时还兼容了微信小程序的生命周期，但不建议使用</p>
+</blockquote>
+<hr>
+<h4 id="不支持-BOM／DOM-操作"><a href="#不支持-BOM／DOM-操作" class="headerlink" title="不支持 BOM／DOM 操作"></a>不支持 <code>BOM／DOM</code> 操作</h4><p>小程序里所有的 BOM／DOM 都不能用，也就是说 <code>v-html</code> 指令不能用</p>
+<hr>
+<h4 id="复杂的-JavaScript-渲染表达式可能会出问题"><a href="#复杂的-JavaScript-渲染表达式可能会出问题" class="headerlink" title="复杂的 JavaScript 渲染表达式可能会出问题"></a>复杂的 <code>JavaScript</code> 渲染表达式可能会出问题</h4><blockquote>
+<p>渲染时会把 <code>template</code> 中的双花括号的部分，直接编码到 <code>wxml</code> 文件中，由于微信小程序的能力限制(数据绑定)，所以无法支持复杂的 <code>JavaScript 表达式</code>  </p>
+</blockquote>
+<hr>
+<h4 id="不能在-template-内使用-methods-中的函数"><a href="#不能在-template-内使用-methods-中的函数" class="headerlink" title="不能在 template 内使用 methods 中的函数"></a>不能在 <code>template</code> 内使用 <code>methods</code> 中的函数</h4><p>能用计算属性<code>computed</code>就用计算属性吧</p>
+<hr>
+<h4 id="mpvue不支持自定义tabBar"><a href="#mpvue不支持自定义tabBar" class="headerlink" title="mpvue不支持自定义tabBar"></a>mpvue不支持自定义tabBar</h4><p>方式1: 用微信官方的自定义tabBar写个原生的tabBar，修改webpack配置，copy过去   </p>
+<p>问题： 自定义tabBar会在每个页面都存在（笑），只能用官方提供的<code>wx.hideTabBar()</code>隐藏，以及tabBar选中状态得在当前页面用<code>getTabBar</code>更改选择状态，<br>但是好像<code>getTabBar</code>这个获取不到实例（不知是不是我的操作有误）  </p>
+<p>方式2：先自定义个Vue组件做tabBar，接着在<code>app.json</code>里新增个<code>tabBar</code>字段配置情况同vue组件，然后在<code>App.vue</code>里用<code>wx.hideTabBar()</code>隐藏原生的，<br>vue组件里的tab切换全部用<code>wx.switchTab()</code>    </p>
+<p>问题:  底部导航栏初次切换时，会发生闪烁 </p>
+<hr>
+<h4 id="mpvue不支持slot-scope，连用多个slot时都可能存在问题"><a href="#mpvue不支持slot-scope，连用多个slot时都可能存在问题" class="headerlink" title="mpvue不支持slot-scope，连用多个slot时都可能存在问题"></a>mpvue不支持slot-scope，连用多个slot时都可能存在问题</h4><hr>
+<h4 id="组件上不支持v-show"><a href="#组件上不支持v-show" class="headerlink" title="组件上不支持v-show"></a>组件上不支持v-show</h4><hr>
+<h4 id="组件嵌套存在问题"><a href="#组件嵌套存在问题" class="headerlink" title="组件嵌套存在问题"></a>组件嵌套存在问题</h4><p>简单嵌套是没问题的，太复杂的可能出错，具体标准不知道，得看脸  </p>
+<hr>
+<h4 id="组件使用slot时需重新编译，并且每次更新slot的插入值也需重新编译"><a href="#组件使用slot时需重新编译，并且每次更新slot的插入值也需重新编译" class="headerlink" title="组件使用slot时需重新编译，并且每次更新slot的插入值也需重新编译"></a>组件使用slot时需重新编译，并且每次更新slot的插入值也需重新编译</h4><p>说好的热更新呢😠  </p>
+<hr>
+<h4 id="自定义组件不支持v-model"><a href="#自定义组件不支持v-model" class="headerlink" title="自定义组件不支持v-model"></a>自定义组件不支持v-model</h4><hr>
+<h4 id="改动app-json时需重新编译"><a href="#改动app-json时需重新编译" class="headerlink" title="改动app.json时需重新编译"></a>改动app.json时需重新编译</h4><p>说好的热更新呢😠  </p>
+<hr>
+<h4 id="ios与安卓滚动动画时长不一致，微信api监听屏幕滚动触发时机不一致"><a href="#ios与安卓滚动动画时长不一致，微信api监听屏幕滚动触发时机不一致" class="headerlink" title="ios与安卓滚动动画时长不一致，微信api监听屏幕滚动触发时机不一致"></a>ios与安卓滚动动画时长不一致，微信api监听屏幕滚动触发时机不一致</h4><p>这个不算mpvue的坑，算了不管，记录下来，当初坑了我好久  </p>
+<hr>
+<h4 id="nextTick并不是渲染完成后执行，仅仅只是个延时器（怕不是个假的吧）"><a href="#nextTick并不是渲染完成后执行，仅仅只是个延时器（怕不是个假的吧）" class="headerlink" title="nextTick并不是渲染完成后执行，仅仅只是个延时器（怕不是个假的吧）"></a>nextTick并不是渲染完成后执行，仅仅只是个延时器（怕不是个假的吧）</h4><p>看了下原来官方的也是这样的 </p>
+<blockquote>
+<p><code>wx.nextTick()</code> 延迟一部分操作到下一个时间片再执行。（类似于 setTimeout）</p>
+</blockquote>
+<hr>
+<h4 id="mpvue页面数据与组件并不会随页面销毁而初始化"><a href="#mpvue页面数据与组件并不会随页面销毁而初始化" class="headerlink" title="mpvue页面数据与组件并不会随页面销毁而初始化"></a>mpvue页面数据与组件并不会随页面销毁而初始化</h4><p>页面数据只能自己手动初始化（一个一个this难道不累么）</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//建议封装挂载到全局，毕竟每次都要用</span></span><br><span class="line"><span class="built_in">Object</span>.assign(<span class="keyword">this</span>.$data, <span class="keyword">this</span>.$options.data());</span><br></pre></td></tr></table></figure>
+
+<p>组件只能自己手动销毁</p>
+<hr>
+<h4 id="获取页面传参过来的信息"><a href="#获取页面传参过来的信息" class="headerlink" title="获取页面传参过来的信息"></a>获取页面传参过来的信息</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//建议封装挂载到全局，毕竟每次都要用</span></span><br><span class="line"><span class="keyword">this</span>.$root.$mp.query[name]</span><br></pre></td></tr></table></figure>
+
+
+<hr>
+<h4 id="大部分原生的事件响应event都在event-mp-detail里"><a href="#大部分原生的事件响应event都在event-mp-detail里" class="headerlink" title="大部分原生的事件响应event都在event.mp.detail里"></a>大部分原生的事件响应<code>event</code>都在<code>event.mp.detail</code>里</h4><hr>
+<h4 id="bind-和-catch-事件同时绑定时，只会触发-bind-catch-不会被触发"><a href="#bind-和-catch-事件同时绑定时，只会触发-bind-catch-不会被触发" class="headerlink" title="bind 和 catch 事件同时绑定时，只会触发 bind ,catch 不会被触发"></a><code>bind</code> 和 <code>catch</code> 事件同时绑定时，只会触发 <code>bind</code> ,<code>catch</code> 不会被触发</h4><hr>
+<h4 id="事件修饰符"><a href="#事件修饰符" class="headerlink" title="事件修饰符"></a>事件修饰符</h4><ul>
+<li><code>.stop</code> 可以阻止冒泡，但绑多一个非冒泡事件时会失效</li>
+<li><code>.once</code> 不能用</li>
+</ul>
+<h3 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h3><blockquote>
+<p>目前踩到的坑就这些，有些可能忘记了，等遇到想起来再来补充。<br>了解更多的可以看<a href="http://mpvue.com/mpvue/" target="_blank" rel="noopener">官网文档</a>，文档里没写？可以去<a href="https://github.com/Meituan-Dianping/mpvue/issues" target="_blank" rel="noopener">issues</a>看看  </p>
+</blockquote>
+<p>附:<br>     个人开发时常用封装 </p>
+<ul>
+<li><p>/ibs/utils.js</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">   <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 获取页面消息参数</span></span><br><span class="line"><span class="comment">   * @param name</span></span><br><span class="line"><span class="comment">   * 参数名</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  getQuery(name) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.$root.$mp.query[name];</span><br><span class="line">  &#125;,</span><br><span class="line">  </span><br><span class="line">   <span class="comment">/*</span></span><br><span class="line"><span class="comment">      初始化data数据（由于mpvue在组件销毁时没有初始化data，需手动init）</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  init() &#123;</span><br><span class="line">    <span class="built_in">Object</span>.assign(<span class="keyword">this</span>.$data, <span class="keyword">this</span>.$options.data());</span><br><span class="line">  &#125;,</span><br><span class="line">  </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 跳转页面</span></span><br><span class="line"><span class="comment">   * @param id  文件目录的名字,如 /pages/index/main 中的 index 即时 称为 id</span></span><br><span class="line"><span class="comment">   *            (页面命名得按照固定格式)</span></span><br><span class="line"><span class="comment">   * @param  param  页面传递间的参数, Object</span></span><br><span class="line"><span class="comment">   *</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  toPage(id, param = &#123;&#125;) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!id) <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">let</span> str = <span class="string">''</span>;</span><br><span class="line">    <span class="keyword">const</span> keys = <span class="built_in">Object</span>.keys(param);</span><br><span class="line">    <span class="keyword">if</span> (keys.length) &#123;</span><br><span class="line">      str += <span class="string">`?`</span>;</span><br><span class="line">      keys.forEach(<span class="function"><span class="params">i</span> =&gt;</span> &#123;</span><br><span class="line">        str += <span class="string">`<span class="subst">$&#123;i&#125;</span>=<span class="subst">$&#123;param[i]&#125;</span>&amp;`</span>;</span><br><span class="line">      &#125;);</span><br><span class="line">      str = str.slice(<span class="number">0</span>, str.length - <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    wx.navigateTo(&#123;</span><br><span class="line">      url: <span class="string">`/pages/<span class="subst">$&#123;id&#125;</span>/main<span class="subst">$&#123;str&#125;</span>`</span></span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;,</span><br><span class="line"> </span><br><span class="line">   <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 快速显示消息框</span></span><br><span class="line"><span class="comment">   * @param msg</span></span><br><span class="line"><span class="comment">   * 消息内容</span></span><br><span class="line"><span class="comment">   * @param opts</span></span><br><span class="line"><span class="comment">   * 额外参数</span></span><br><span class="line"><span class="comment">   *  icon</span></span><br><span class="line"><span class="comment">   * 消息图标 默认没有</span></span><br><span class="line"><span class="comment">   *  time</span></span><br><span class="line"><span class="comment">   * 持续时间 默认1500ms</span></span><br><span class="line"><span class="comment">   *  done</span></span><br><span class="line"><span class="comment">   * 文字消失时的回调 默认 false</span></span><br><span class="line"><span class="comment">   *    @return  Promise</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  showMessage(msg, opts) &#123;</span><br><span class="line">    <span class="keyword">const</span> flag = msg.constructor == <span class="built_in">String</span> || msg.constructor == <span class="built_in">Number</span>;</span><br><span class="line">    opts = opts || &#123;&#125;;</span><br><span class="line">    opts.time = opts.time || <span class="number">1500</span>;</span><br><span class="line">    wx.showToast(&#123;</span><br><span class="line">      title: flag ? msg : <span class="string">'参数格式不正确'</span>,</span><br><span class="line">      icon: opts.icon || <span class="string">'none'</span>,</span><br><span class="line">      duration: opts.time</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">if</span> (opts.done) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="params">resolve</span> =&gt;</span> setTimeout(resolve, opts.time));</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 显示loading</span></span><br><span class="line"><span class="comment">   * @param msg</span></span><br><span class="line"><span class="comment">   * 消息内容, 默认 '正在加载'</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  showLoading(msg = <span class="string">'正在加载'</span>) &#123;</span><br><span class="line">    wx.showLoading(&#123;</span><br><span class="line">      title: msg,</span><br><span class="line">      mask: <span class="literal">true</span></span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;,</span><br><span class="line">  </span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 预览图片</span></span><br><span class="line"><span class="comment">   * 图片url数组</span></span><br><span class="line"><span class="comment">   * @param array</span></span><br><span class="line"><span class="comment">   * @param index</span></span><br><span class="line"><span class="comment">   * 数组下标,显示第几张图片,默认第一张</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  previewImage(array, index = <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">const</span> url = array[index];</span><br><span class="line">      wx.previewImage(&#123;</span><br><span class="line">        current: url,</span><br><span class="line">        urls: array,</span><br><span class="line">        success: resolve,</span><br><span class="line">        fail: reject</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;,</span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>main.js</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> utils <span class="keyword">from</span> <span class="string">'./libs/utils'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//挂载全局工具集</span></span><br><span class="line">Vue.prototype.$utils = utils;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取页面消息参数</span></span><br><span class="line">Vue.prototype.$getQuery = utils.getQuery;</span><br><span class="line"></span><br><span class="line"><span class="comment">//初始化页面内data</span></span><br><span class="line">Vue.prototype.$init = utils.init;</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+
+            
+        </div>
+        <footer class="article-footer">
+            
+                
+    <div id="copyright">
+        <div>
+            <b>原文作者： </b>
+            lecoler
+        </div>
+        <div>
+            <b>原文链接： </b>
+            <a href=" https://lecoler.github.io/2019/09/16/mpvue/" target="_blank"> https://lecoler.github.io/2019/09/16/mpvue/ </a>
+        </div>
+        <div>
+            <b> 版权声明： </b>
+            本博客所有文章除特别声明外，均采用  <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0 </a> 许可协议。转载请注明出处！
+        </div>
+    </div>
+
+
+            
+            <a data-url="https://lecoler.github.io/2019/09/16/mpvue/" data-id="ckp6qde88003g7ilr6923k7kt"
+               class="article-share-link">分享</a>
+            
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/vue/">vue</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/小程序/">小程序</a></li></ul>
+
+        </footer>
+
+    </div>
+
+    
+        
+  <nav class="article-nav">
+    
+      <a href="/2020/01/15/android-serialPort/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            安卓串口通讯（模拟机测试）
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2019/06/26/vuex/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">Vuex入门</div>
+      </a>
+    
+  </nav>
+
+
+    
+
+    
+        
+            <div class="width-full flex-column-center rel" id="donate">
+    <div class="donate-text rel">
+        <span class="flex-column-center abs"><i class="fe fe-heart-o"></i>打赏</span>
+        <span class="abs break-nowrap">欣赏此文？请作者喝杯咖啡！</span>
+    </div>
+    <div class="donate-box flex-center rel">
+        <a id="aliPay" title="支付宝付款码"></a>
+        <a id="weChat" title="微信付款码"></a>
+    </div>
+    <div id="donate-qrBox" class="hidden abs over-hidden hideQR"></div>
+    <img src="/images/zfb.jpg" class="hidden" />
+    <img src="/images/wx.jpg" class="hidden" />
+</div>
+<script>
+    let qr = {
+        aliPay: '/images/zfb.jpg',
+        weChat: '/images/wx.jpg',
+    };
+    let qrBox = $('#donate-qrBox');
+    qrBox.click(() => {
+        qrBox.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', () => {
+            qrBox.addClass('hidden');
+        }).toggleClass('showQR hideQR', 0)
+    });
+    $('#donate>.donate-box>a').click(function () {
+        qrBox.css('background-image', 'url(' + qr[$(this).attr('id')] + ')').unbind('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend').toggleClass('hidden showQR hideQR', 1);
+    });
+</script>
+
+        
+        <div class="directory">
+    <div class="height-full fix" id="directory-list"></div>
+    <div class="fix flex-center active" id="directory-btn">
+        <a title="目录"><i class="fe fe-book"></i></a>
+    </div>
+</div>
+<script>
+    const $html = $('.article-entry').children();
+    const $list = $('#directory-list').empty();
+    const $btn = $('#directory-btn').on('click',()=>{
+        $list.toggleClass('active')
+    })
+    const Tags = ['H1','H2','H3','H4','H5','H6','H7']
+    for(let dom of $html.toArray()){
+        let type
+        if (Tags.some((i, k) => i == $(dom).get(0).tagName && (type = k + 1))) {
+            const id = $(dom).attr('id');
+            const $a = $(`<a href="#${id}" title="${id}" class="block break-ellipsis">${id}</a>`).css({
+                'padding-left': `${(type-1)*0.5}rem`,
+                'font-size': `${1.6 - type * 0.02}rem`,
+                'text-decoration': 'none',
+                'color': '#fff',
+            })
+            $list.append($a);
+        }
+    }
+</script>
+
+        
+    <div id="vcomments"></div>
+    <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+    <script type="text/javascript">
+      new Valine({
+            el: '#vcomments',
+            appId: 'TblyYUGKjeqtAejC6buEAYiw-gzGzoHsz',
+            appKey: 'FoUxsfWPrMCqDswWNoTIO1Dc',
+            placeholder: '回复',
+            avatar: 'retro',
+            visitor: 'true'
+        })
+    </script>
+  
+  
+        <script>
+    const items = $('.highlight', '.article-entry');
+    const list = items && items.toArray();
+    for (let item of list) {
+        let copyText;
+        const code = item.getElementsByClassName('code')[0];
+        if (code) {
+            copyText = code.innerText;
+        }
+        const copyBtn = $('<button>复制</button>');
+        copyBtn.css({
+            position: 'absolute',
+            right: '10px',
+            top: '10px',
+            cursor: 'pointer'
+        });
+        copyBtn.on('click', function () {
+            if (copyText) {
+                const dom = $(`<textarea >${copyText}</textarea>`);
+                dom.css({
+                    opacity: 0,
+                    position: 'absolute',
+                    width: '1px',
+                    height: '1px'
+                });
+                this.appendChild(dom.get(0));
+                dom.select();
+                !document.execCommand('Copy') && alert('抱歉，浏览器不支持复制功能');
+                dom.remove();
+            }
+        })
+        item.appendChild(copyBtn.get(0));
+    }
+</script>
+    
+
+</article>
+
+
+
+
+</section>
+    <footer class="footer">
+  <div class="outer">
+    <div class="float-right">
+      <ul class="list-inline">
+    <li>
+        <i class="fe fe-bar-chart"></i>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>
+        </span>
+    </li>
+    <li>
+        <i class="fe fe-smile-alt"></i>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>
+        </span>
+    </li>
+</ul>
+
+    </div>
+    <ul class="list-inline">
+      <li>&copy; 2017 - 2021 lecoler博客</li>
+      <li>由 <a href="http://hexo.io/" target="_blank">Hexo</a> 驱动</li>
+      <li>自制主题 - zero 是基于 <a href="https://github.com/zhwangart/hexo-theme-ocean" target="_blank">Ocean</a> 二次开发</li>
+    </ul>
+    </ul>
+  </div>
+</footer>
+
+</main>
+<aside class="sidebar">
+    <button class="navbar-toggle"></button>
+
+<nav class="navbar">
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">主页</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/archives">归档</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/categories">分类</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tags">标签</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">关于</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="搜索"><i class="fe fe-search"></i>搜索</a>
+    </li>
+  </ul>
+</nav>
+
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+        <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+          <i class="fe fe-feed"></i>
+        </a>
+      
+    </li>
+  </ul>
+</nav>
+
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="搜索关键字...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+
+</div>
+
+</aside>
+<script src="/js/lazyload.min.js"></script>
+<script src="/js/zero.js"></script>
+
+    <script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+    <script src="/js/search.js"></script>
+
+
+
+    <script src="https://cdn.bootcss.com/canvas-nest.js/2.0.4/canvas-nest.js"
+            color="0,0,0"
+            opacity='0.5'
+            zIndex="-1"
+            count="20"></script>
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    
+    
+        <meta name="keywords" content="博客, web前端, JavaScript, css, html, 编程, 程序, lecoler, 问题,">
+    
+    
+        <meta name="description" content="lecoler的个人博客，用于记录web前端以及实际开发中遇到的问题及解决方案，还会有各种开发优化方案及疑难杂症">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>
+        安卓串口通讯（模拟机测试） |
+        
+        lecoler博客</title>
+    
+        <link rel="shortcut icon" href="/favicon.ico">
+    
+    <link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/css/style.css">
+    
+        <link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+    
+    
+        <script src="https://hm.baidu.com/hm.js?62da0995840f7bcdbd4e141a4bb18192"></script>
+    
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/pace.min.js"></script>
+</head>
+
+</html>
+<body>
+
+<main class="content over-hidden" id="main">
+    <section class="outer">
+  <article id="post-android-serialPort" class="article article-type-post" itemscope
+         itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+  
+    <h1 class="article-title" itemprop="name">
+      安卓串口通讯（模拟机测试）
+    </h1>
+  
+  
+
+
+
+
+            </header>
+        
+
+        
+            <div class="article-meta">
+                <a href="/2020/01/15/android-serialPort/" class="article-date">
+  <time datetime="2020-01-15T16:00:00.000Z" itemprop="datePublished">2020-01-16</time>
+</a>
+                
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+            </div>
+        
+
+        <div class="article-entry" itemprop="articleBody">
+            
+
+            
+
+            
+                <p>安卓串口通讯<br>Android studio模拟机模拟测试串口通讯，踩坑记录    </p>
+<a id="more"></a>
+
+<h1 id="Android-串口"><a href="#Android-串口" class="headerlink" title="Android 串口"></a>Android 串口</h1><p>需求安卓通过串口与硬件设备通讯交互</p>
+<p>开源的 <code>android_serialport_api</code>库</p>
+<h3 id="需要"><a href="#需要" class="headerlink" title="需要"></a>需要</h3><ul>
+<li>Android studio  模拟机  <ul>
+<li>不要下带<strong>Play Store</strong>(谷歌商店) ，会获取不到root权限的</li>
+</ul>
+</li>
+<li>虚拟串口设备工具<ul>
+<li>下载安装后，虚拟对 串口 <code>COM1-COM2</code>  (其他的也行，本文用<code>COM1-COM2</code>为例)</li>
+<li>本文使用<code>Virtual Serial Port Driver Pro 9.0</code>  </li>
+</ul>
+</li>
+<li>串口调试工具<ul>
+<li>网上随便找个，能测试收发就行</li>
+<li>本文使用  <code>Serial Port Utility</code> </li>
+</ul>
+</li>
+</ul>
+<h3 id="步骤零"><a href="#步骤零" class="headerlink" title="步骤零"></a>步骤零</h3><ul>
+<li><p>串口调试工具</p>
+<ul>
+<li>启动打开 <code>COM1</code>口，波特率 <code>9600</code>  (两端一致就行)</li>
+</ul>
+</li>
+<li><p>模拟机</p>
+<ul>
+<li><p>安装完后，打开命令提示符<code>cmd</code></p>
+</li>
+<li><p>进入你 Android studio<code>sdk</code> 所安装的位置 ,里面的 <code>tools</code></p>
+<ul>
+<li>例如 <code>D:\Android\Sdk\tools</code></li>
+</ul>
+</li>
+<li><p>执行</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">emulator.exe @api -qemu -serial COM2</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><code>COM2</code> 是要映射的端口</p>
+</li>
+<li><p><code>api</code>  是我的模拟器 名字</p>
+<ul>
+<li><p>不知道的可用下列命令查看</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">emulator.exe -list-avds</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>执行成功后，会让你选配置，同串口工具一致即可</p>
+</li>
+<li><p>模拟器开机后，需设置串口权限</p>
+<ul>
+<li><p>进入 <code>D:\Android\Sdk\platform-tools</code></p>
+</li>
+<li><p>执行</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">      <span class="comment"># 进入 Android 内部</span></span><br><span class="line">      adb.exe shell</span><br><span class="line"><span class="comment"># 切换至 管理员权限</span></span><br><span class="line">      su</span><br><span class="line">      <span class="comment"># 打开 串口 所有权限</span></span><br><span class="line">      chmod 777 /dev/ttyS1</span><br><span class="line">      <span class="comment"># 关闭校验</span></span><br><span class="line">      setenforce 0</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>以上两端联通</p>
+<blockquote>
+<p>大致对应表</p>
+<p>ttyS0  —  COM1</p>
+<p>ttyS1  —  COM2</p>
+<p>注意:</p>
+<p>模拟器的 COM1 口 好像被占用了</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="步骤一"><a href="#步骤一" class="headerlink" title="步骤一"></a>步骤一</h3><p>copy <code>android_serialport_api</code>的文件</p>
+<ul>
+<li><p><code>jni</code>目录(文件夹以及里面全部内容)</p>
+</li>
+<li><p><code>jniLibs</code>目录(文件夹以及里面全部内容)</p>
+</li>
+<li><p><code>android_serialport_api</code>目录(文件夹以及里面全部内容)</p>
+</li>
+</ul>
+<h3 id="步骤二"><a href="#步骤二" class="headerlink" title="步骤二"></a>步骤二</h3><ul>
+<li><code>jni</code>和<code>jniLibs</code> 移动至自己项目里的<code>app</code>&gt;<code>src</code>&gt;<code>main</code>下</li>
+<li><code>android_serialport_api</code> 放到 <code>java</code></li>
+</ul>
+<img src="/2020/01/15/android-serialPort/1.png" title="目录结构">
+
+
+<ul>
+<li>移动完成后，用studio 预览下看是否添加成功</li>
+</ul>
+<img src="/2020/01/15/android-serialPort/2.png" title="目录结构">
+
+<h3 id="步骤三"><a href="#步骤三" class="headerlink" title="步骤三"></a>步骤三</h3><p>现在开始使用</p>
+<ul>
+<li><code>/dev/ttyS1</code>   对应 <code>COM2</code> (模拟器上的)</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//引入库</span></span><br><span class="line"><span class="keyword">import</span> android_serialport_api.SerialPort;</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">*  省略不重要代码</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">serialport</span> <span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="comment">//打开串口 ttyS1</span></span><br><span class="line">    SerialPort mSerialPort = <span class="keyword">new</span> SerialPort(<span class="keyword">new</span> File(<span class="string">"/dev/ttyS1"</span>), <span class="number">9600</span>, <span class="number">0</span>);</span><br><span class="line">    <span class="comment">// 输出流</span></span><br><span class="line">    OutputStream mOutputStream = mSerialPort.getOutputStream();</span><br><span class="line">    <span class="comment">// 输入流</span></span><br><span class="line">    InputStream mInputStream = mSerialPort.getInputStream();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//发送信息</span></span><br><span class="line">    <span class="keyword">byte</span>[] send_msg = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1</span>];</span><br><span class="line">    send_msg[<span class="number">0</span>] = <span class="keyword">new</span> String(<span class="string">"100"</span>).byteValue();</span><br><span class="line">    mOutputStream.write(send_msg);</span><br><span class="line">    mOutputStream.flush();</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//接收信息</span></span><br><span class="line">    <span class="keyword">byte</span>[] get_msg = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1</span>];</span><br><span class="line">    <span class="keyword">int</span> size = mInputStream.read(get_msg);</span><br><span class="line">    String msg = Integer.valueOf(get_msg[<span class="number">0</span>]).toString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+            
+        </div>
+        <footer class="article-footer">
+            
+                
+    <div id="copyright">
+        <div>
+            <b>原文作者： </b>
+            lecoler
+        </div>
+        <div>
+            <b>原文链接： </b>
+            <a href=" https://lecoler.github.io/2020/01/15/android-serialPort/" target="_blank"> https://lecoler.github.io/2020/01/15/android-serialPort/ </a>
+        </div>
+        <div>
+            <b> 版权声明： </b>
+            本博客所有文章除特别声明外，均采用  <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0 </a> 许可协议。转载请注明出处！
+        </div>
+    </div>
+
+
+            
+            <a data-url="https://lecoler.github.io/2020/01/15/android-serialPort/" data-id="ckp6qde6m00117ilr6680priu"
+               class="article-share-link">分享</a>
+            
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li></ul>
+
+        </footer>
+
+    </div>
+
+    
+        
+  <nav class="article-nav">
+    
+      <a href="/2020/02/01/android-AppStartRun/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            安卓app开机启动
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2019/09/16/mpvue/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">mpvue 踩坑历程</div>
+      </a>
+    
+  </nav>
+
+
+    
+
+    
+        
+            <div class="width-full flex-column-center rel" id="donate">
+    <div class="donate-text rel">
+        <span class="flex-column-center abs"><i class="fe fe-heart-o"></i>打赏</span>
+        <span class="abs break-nowrap">欣赏此文？请作者喝杯咖啡！</span>
+    </div>
+    <div class="donate-box flex-center rel">
+        <a id="aliPay" title="支付宝付款码"></a>
+        <a id="weChat" title="微信付款码"></a>
+    </div>
+    <div id="donate-qrBox" class="hidden abs over-hidden hideQR"></div>
+    <img src="/images/zfb.jpg" class="hidden" />
+    <img src="/images/wx.jpg" class="hidden" />
+</div>
+<script>
+    let qr = {
+        aliPay: '/images/zfb.jpg',
+        weChat: '/images/wx.jpg',
+    };
+    let qrBox = $('#donate-qrBox');
+    qrBox.click(() => {
+        qrBox.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', () => {
+            qrBox.addClass('hidden');
+        }).toggleClass('showQR hideQR', 0)
+    });
+    $('#donate>.donate-box>a').click(function () {
+        qrBox.css('background-image', 'url(' + qr[$(this).attr('id')] + ')').unbind('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend').toggleClass('hidden showQR hideQR', 1);
+    });
+</script>
+
+        
+        <div class="directory">
+    <div class="height-full fix" id="directory-list"></div>
+    <div class="fix flex-center active" id="directory-btn">
+        <a title="目录"><i class="fe fe-book"></i></a>
+    </div>
+</div>
+<script>
+    const $html = $('.article-entry').children();
+    const $list = $('#directory-list').empty();
+    const $btn = $('#directory-btn').on('click',()=>{
+        $list.toggleClass('active')
+    })
+    const Tags = ['H1','H2','H3','H4','H5','H6','H7']
+    for(let dom of $html.toArray()){
+        let type
+        if (Tags.some((i, k) => i == $(dom).get(0).tagName && (type = k + 1))) {
+            const id = $(dom).attr('id');
+            const $a = $(`<a href="#${id}" title="${id}" class="block break-ellipsis">${id}</a>`).css({
+                'padding-left': `${(type-1)*0.5}rem`,
+                'font-size': `${1.6 - type * 0.02}rem`,
+                'text-decoration': 'none',
+                'color': '#fff',
+            })
+            $list.append($a);
+        }
+    }
+</script>
+
+        
+    <div id="vcomments"></div>
+    <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+    <script type="text/javascript">
+      new Valine({
+            el: '#vcomments',
+            appId: 'TblyYUGKjeqtAejC6buEAYiw-gzGzoHsz',
+            appKey: 'FoUxsfWPrMCqDswWNoTIO1Dc',
+            placeholder: '回复',
+            avatar: 'retro',
+            visitor: 'true'
+        })
+    </script>
+  
+  
+        <script>
+    const items = $('.highlight', '.article-entry');
+    const list = items && items.toArray();
+    for (let item of list) {
+        let copyText;
+        const code = item.getElementsByClassName('code')[0];
+        if (code) {
+            copyText = code.innerText;
+        }
+        const copyBtn = $('<button>复制</button>');
+        copyBtn.css({
+            position: 'absolute',
+            right: '10px',
+            top: '10px',
+            cursor: 'pointer'
+        });
+        copyBtn.on('click', function () {
+            if (copyText) {
+                const dom = $(`<textarea >${copyText}</textarea>`);
+                dom.css({
+                    opacity: 0,
+                    position: 'absolute',
+                    width: '1px',
+                    height: '1px'
+                });
+                this.appendChild(dom.get(0));
+                dom.select();
+                !document.execCommand('Copy') && alert('抱歉，浏览器不支持复制功能');
+                dom.remove();
+            }
+        })
+        item.appendChild(copyBtn.get(0));
+    }
+</script>
+    
+
+</article>
+
+
+
+
+</section>
+    <footer class="footer">
+  <div class="outer">
+    <div class="float-right">
+      <ul class="list-inline">
+    <li>
+        <i class="fe fe-bar-chart"></i>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>
+        </span>
+    </li>
+    <li>
+        <i class="fe fe-smile-alt"></i>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>
+        </span>
+    </li>
+</ul>
+
+    </div>
+    <ul class="list-inline">
+      <li>&copy; 2017 - 2021 lecoler博客</li>
+      <li>由 <a href="http://hexo.io/" target="_blank">Hexo</a> 驱动</li>
+      <li>自制主题 - zero 是基于 <a href="https://github.com/zhwangart/hexo-theme-ocean" target="_blank">Ocean</a> 二次开发</li>
+    </ul>
+    </ul>
+  </div>
+</footer>
+
+</main>
+<aside class="sidebar">
+    <button class="navbar-toggle"></button>
+
+<nav class="navbar">
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">主页</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/archives">归档</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/categories">分类</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tags">标签</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">关于</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="搜索"><i class="fe fe-search"></i>搜索</a>
+    </li>
+  </ul>
+</nav>
+
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+        <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+          <i class="fe fe-feed"></i>
+        </a>
+      
+    </li>
+  </ul>
+</nav>
+
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="搜索关键字...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+
+</div>
+
+</aside>
+<script src="/js/lazyload.min.js"></script>
+<script src="/js/zero.js"></script>
+
+    <script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+    <script src="/js/search.js"></script>
+
+
+
+    <script src="https://cdn.bootcss.com/canvas-nest.js/2.0.4/canvas-nest.js"
+            color="0,0,0"
+            opacity='0.5'
+            zIndex="-1"
+            count="20"></script>
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    
+    
+        <meta name="keywords" content="博客, web前端, JavaScript, css, html, 编程, 程序, lecoler, 问题,">
+    
+    
+        <meta name="description" content="lecoler的个人博客，用于记录web前端以及实际开发中遇到的问题及解决方案，还会有各种开发优化方案及疑难杂症">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>
+        css垂直水平居住实现方法 |
+        
+        lecoler博客</title>
+    
+        <link rel="shortcut icon" href="/favicon.ico">
+    
+    <link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/css/style.css">
+    
+        <link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+    
+    
+        <script src="https://hm.baidu.com/hm.js?62da0995840f7bcdbd4e141a4bb18192"></script>
+    
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/pace.min.js"></script>
+</head>
+
+</html>
+<body>
+
+<main class="content over-hidden" id="main">
+    <section class="outer">
+  <article id="post-css垂直水平居中实现" class="article article-type-post" itemscope
+         itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+  
+    <h1 class="article-title" itemprop="name">
+      css垂直水平居住实现方法
+    </h1>
+  
+  
+
+
+
+
+            </header>
+        
+
+        
+            <div class="article-meta">
+                <a href="/2020/06/22/css垂直水平居中实现/" class="article-date">
+  <time datetime="2020-06-22T16:00:00.000Z" itemprop="datePublished">2020-06-23</time>
+</a>
+                
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/随手记/">随手记</a>
+  </div>
+
+            </div>
+        
+
+        <div class="article-entry" itemprop="articleBody">
+            
+
+            
+
+            
+                <p>css实现垂直水平都居中的方法汇总，都是自己亲手实践过的     </p>
+<a id="more"></a>
+
+<h3 id="方法一（height、line-height、text-align）"><a href="#方法一（height、line-height、text-align）" class="headerlink" title="方法一（height、line-height、text-align）"></a>方法一（height、line-height、text-align）</h3><p>使用height、line-height 设置相同值，配和text-align设置居中</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.box</span>&#123;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">100px</span>;</span><br><span class="line">    <span class="attribute">line-height</span>: <span class="number">100px</span>;</span><br><span class="line">    <span class="attribute">text-align</span>: center;</span><br><span class="line">&#125;</span><br><span class="line">```  </span><br><span class="line">**缺点：固定高度，无法实现两行文本的居中**</span><br><span class="line"></span><br><span class="line">### 方法二（<span class="selector-tag">position</span>、<span class="selector-tag">margin</span>：负值）</span><br><span class="line">父元素设置`<span class="selector-tag">position</span>: <span class="selector-tag">relative</span>`，使用`<span class="selector-tag">position</span>: <span class="selector-tag">absolute</span>`，配合<span class="selector-tag">margin</span>负值食用。</span><br><span class="line">```<span class="selector-tag">css</span></span><br><span class="line"><span class="selector-class">.box</span>&#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">100px</span>;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">100px</span>;</span><br><span class="line">    <span class="attribute">position</span>:absolute;</span><br><span class="line">    <span class="attribute">top</span>: <span class="number">50%</span>;</span><br><span class="line">    <span class="attribute">left</span>: <span class="number">50%</span>;</span><br><span class="line">    <span class="attribute">margin-top</span>: -<span class="number">50px</span>;</span><br><span class="line">    <span class="attribute">margin-left</span>: -<span class="number">50px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*简化*/</span></span><br><span class="line"><span class="selector-class">.box</span>&#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">100px</span>;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">100px</span>;</span><br><span class="line">    <span class="attribute">position</span>:absolute;</span><br><span class="line">    <span class="attribute">top</span>: <span class="built_in">calc</span>(50% - 50px);</span><br><span class="line">    <span class="attribute">left</span>: <span class="built_in">calc</span>(50% - 50px);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>缺点：需配合父元素食用，固定高度，高度无法自适应内容。元素脱离文档流</strong>  </p>
+<h3 id="方法三（position、margin：auto）"><a href="#方法三（position、margin：auto）" class="headerlink" title="方法三（position、margin：auto）"></a>方法三（position、margin：auto）</h3><p>父元素设置<code>position: relative</code>，使用<code>position: absolute</code>，配合<code>margin: auto</code>食用。  </p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.box</span>&#123;</span><br><span class="line">    <span class="attribute">position</span>:absolute;</span><br><span class="line">    <span class="attribute">top</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">right</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">bottom</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">left</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">margin</span>: auto;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>缺点：需配合父元素食用，元素脱离文档流</strong>  </p>
+<h3 id="方法四（position、transform-translate）"><a href="#方法四（position、transform-translate）" class="headerlink" title="方法四（position、transform: translate）"></a>方法四（position、transform: translate）</h3><p>父元素设置<code>position: relative</code>，使用<code>position: absolute</code>，配合<code>transform: translate()</code>食用。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.box</span>&#123;</span><br><span class="line">    <span class="attribute">position</span>:absolute;</span><br><span class="line">    <span class="attribute">top</span>: <span class="number">50%</span>;</span><br><span class="line">    <span class="attribute">left</span>: <span class="number">50%</span>;</span><br><span class="line">    <span class="attribute">-webkit-transform</span>: <span class="built_in">translate</span>(-50%, -50%);</span><br><span class="line">    <span class="attribute">-ms-transform</span>: <span class="built_in">translate</span>(-50%, -50%);</span><br><span class="line">    <span class="attribute">transform</span>: <span class="built_in">translate</span>(-50%, -50%);</span><br><span class="line">&#125;</span><br><span class="line">```  </span><br><span class="line">**缺点：需配合父元素食用，元素脱离文档流**  </span><br><span class="line"></span><br><span class="line">### 方法五（<span class="selector-tag">display</span>: <span class="selector-tag">table-cell</span>）</span><br><span class="line">将父元素<span class="selector-tag">display</span>改成<span class="selector-tag">table</span>表格的形式，再配合`<span class="selector-tag">vertical-align</span>: <span class="selector-tag">middle</span>`食用。  </span><br><span class="line">（即，以表格单元格实现居中）   </span><br><span class="line">```<span class="selector-tag">html</span></span><br><span class="line">&lt;<span class="selector-tag">style</span>&gt;</span><br><span class="line"><span class="selector-class">.box</span>&#123;</span><br><span class="line">    <span class="attribute">display</span>: table;</span><br><span class="line">    <span class="attribute">vertical-align</span>: middle;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.iBox</span>&#123;</span><br><span class="line">    <span class="attribute">display</span>: table-cell;</span><br><span class="line">    <span class="attribute">vertical-align</span>: middle;</span><br><span class="line">    <span class="attribute">text-align</span>: center;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/style&gt;</span><br><span class="line"></span><br><span class="line">&lt;<span class="selector-tag">body</span>&gt;</span><br><span class="line">    &lt;div class="box"&gt;</span><br><span class="line">        &lt;div class="iBox"&gt;&lt;/div&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&lt;/body&gt;</span><br></pre></td></tr></table></figure>
+
+<p><strong>缺点：改变了父元素的display属性。IE6-7不支持<code>display:table-cell</code></strong></p>
+<h3 id="方法六（flex）推荐！！！"><a href="#方法六（flex）推荐！！！" class="headerlink" title="方法六（flex）推荐！！！"></a>方法六（flex）推荐！！！</h3><p>flex布局（伸缩布局盒模型，也叫弹性布局盒模型）  </p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.box</span>&#123;</span><br><span class="line">    <span class="attribute">display</span>: flex;</span><br><span class="line">    <span class="attribute">align-items</span>: center;</span><br><span class="line">    <span class="attribute">justify-content</span>: center;</span><br><span class="line">    <span class="comment">/*兼容 IE11*/</span></span><br><span class="line">    <span class="attribute">display</span>: -ms-flex;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>缺点：兼容问题，不支持IE11以下（不包括11）</strong></p>
+
+            
+        </div>
+        <footer class="article-footer">
+            
+                
+    <div id="copyright">
+        <div>
+            <b>原文作者： </b>
+            lecoler
+        </div>
+        <div>
+            <b>原文链接： </b>
+            <a href=" https://lecoler.github.io/2020/06/22/css垂直水平居中实现/" target="_blank"> https://lecoler.github.io/2020/06/22/css垂直水平居中实现/ </a>
+        </div>
+        <div>
+            <b> 版权声明： </b>
+            本博客所有文章除特别声明外，均采用  <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0 </a> 许可协议。转载请注明出处！
+        </div>
+    </div>
+
+
+            
+            <a data-url="https://lecoler.github.io/2020/06/22/css垂直水平居中实现/" data-id="ckp6qde6v001m7ilr6xg1r6yo"
+               class="article-share-link">分享</a>
+            
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/css/">css</a></li></ul>
+
+        </footer>
+
+    </div>
+
+    
+        
+  <nav class="article-nav">
+    
+      <a href="/2020/09/14/Android-rebootApp/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            Android重启App应用
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2020/05/21/-webkit-scrollbar/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">滚动条默认样式修改</div>
+      </a>
+    
+  </nav>
+
+
+    
+
+    
+        
+            <div class="width-full flex-column-center rel" id="donate">
+    <div class="donate-text rel">
+        <span class="flex-column-center abs"><i class="fe fe-heart-o"></i>打赏</span>
+        <span class="abs break-nowrap">欣赏此文？请作者喝杯咖啡！</span>
+    </div>
+    <div class="donate-box flex-center rel">
+        <a id="aliPay" title="支付宝付款码"></a>
+        <a id="weChat" title="微信付款码"></a>
+    </div>
+    <div id="donate-qrBox" class="hidden abs over-hidden hideQR"></div>
+    <img src="/images/zfb.jpg" class="hidden" />
+    <img src="/images/wx.jpg" class="hidden" />
+</div>
+<script>
+    let qr = {
+        aliPay: '/images/zfb.jpg',
+        weChat: '/images/wx.jpg',
+    };
+    let qrBox = $('#donate-qrBox');
+    qrBox.click(() => {
+        qrBox.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', () => {
+            qrBox.addClass('hidden');
+        }).toggleClass('showQR hideQR', 0)
+    });
+    $('#donate>.donate-box>a').click(function () {
+        qrBox.css('background-image', 'url(' + qr[$(this).attr('id')] + ')').unbind('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend').toggleClass('hidden showQR hideQR', 1);
+    });
+</script>
+
+        
+        <div class="directory">
+    <div class="height-full fix" id="directory-list"></div>
+    <div class="fix flex-center active" id="directory-btn">
+        <a title="目录"><i class="fe fe-book"></i></a>
+    </div>
+</div>
+<script>
+    const $html = $('.article-entry').children();
+    const $list = $('#directory-list').empty();
+    const $btn = $('#directory-btn').on('click',()=>{
+        $list.toggleClass('active')
+    })
+    const Tags = ['H1','H2','H3','H4','H5','H6','H7']
+    for(let dom of $html.toArray()){
+        let type
+        if (Tags.some((i, k) => i == $(dom).get(0).tagName && (type = k + 1))) {
+            const id = $(dom).attr('id');
+            const $a = $(`<a href="#${id}" title="${id}" class="block break-ellipsis">${id}</a>`).css({
+                'padding-left': `${(type-1)*0.5}rem`,
+                'font-size': `${1.6 - type * 0.02}rem`,
+                'text-decoration': 'none',
+                'color': '#fff',
+            })
+            $list.append($a);
+        }
+    }
+</script>
+
+        
+    <div id="vcomments"></div>
+    <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+    <script type="text/javascript">
+      new Valine({
+            el: '#vcomments',
+            appId: 'TblyYUGKjeqtAejC6buEAYiw-gzGzoHsz',
+            appKey: 'FoUxsfWPrMCqDswWNoTIO1Dc',
+            placeholder: '回复',
+            avatar: 'retro',
+            visitor: 'true'
+        })
+    </script>
+  
+  
+        <script>
+    const items = $('.highlight', '.article-entry');
+    const list = items && items.toArray();
+    for (let item of list) {
+        let copyText;
+        const code = item.getElementsByClassName('code')[0];
+        if (code) {
+            copyText = code.innerText;
+        }
+        const copyBtn = $('<button>复制</button>');
+        copyBtn.css({
+            position: 'absolute',
+            right: '10px',
+            top: '10px',
+            cursor: 'pointer'
+        });
+        copyBtn.on('click', function () {
+            if (copyText) {
+                const dom = $(`<textarea >${copyText}</textarea>`);
+                dom.css({
+                    opacity: 0,
+                    position: 'absolute',
+                    width: '1px',
+                    height: '1px'
+                });
+                this.appendChild(dom.get(0));
+                dom.select();
+                !document.execCommand('Copy') && alert('抱歉，浏览器不支持复制功能');
+                dom.remove();
+            }
+        })
+        item.appendChild(copyBtn.get(0));
+    }
+</script>
+    
+
+</article>
+
+
+
+
+</section>
+    <footer class="footer">
+  <div class="outer">
+    <div class="float-right">
+      <ul class="list-inline">
+    <li>
+        <i class="fe fe-bar-chart"></i>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>
+        </span>
+    </li>
+    <li>
+        <i class="fe fe-smile-alt"></i>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>
+        </span>
+    </li>
+</ul>
+
+    </div>
+    <ul class="list-inline">
+      <li>&copy; 2017 - 2021 lecoler博客</li>
+      <li>由 <a href="http://hexo.io/" target="_blank">Hexo</a> 驱动</li>
+      <li>自制主题 - zero 是基于 <a href="https://github.com/zhwangart/hexo-theme-ocean" target="_blank">Ocean</a> 二次开发</li>
+    </ul>
+    </ul>
+  </div>
+</footer>
+
+</main>
+<aside class="sidebar">
+    <button class="navbar-toggle"></button>
+
+<nav class="navbar">
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">主页</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/archives">归档</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/categories">分类</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tags">标签</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">关于</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="搜索"><i class="fe fe-search"></i>搜索</a>
+    </li>
+  </ul>
+</nav>
+
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+        <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+          <i class="fe fe-feed"></i>
+        </a>
+      
+    </li>
+  </ul>
+</nav>
+
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="搜索关键字...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+
+</div>
+
+</aside>
+<script src="/js/lazyload.min.js"></script>
+<script src="/js/zero.js"></script>
+
+    <script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+    <script src="/js/search.js"></script>
+
+
+
+    <script src="https://cdn.bootcss.com/canvas-nest.js/2.0.4/canvas-nest.js"
+            color="0,0,0"
+            opacity='0.5'
+            zIndex="-1"
+            count="20"></script>
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    
+    
+        <meta name="keywords" content="博客, web前端, JavaScript, css, html, 编程, 程序, lecoler, 问题,">
+    
+    
+        <meta name="description" content="lecoler的个人博客，用于记录web前端以及实际开发中遇到的问题及解决方案，还会有各种开发优化方案及疑难杂症">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>
+        js 基础 |
+        
+        lecoler博客</title>
+    
+        <link rel="shortcut icon" href="/favicon.ico">
+    
+    <link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/css/style.css">
+    
+        <link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+    
+    
+        <script src="https://hm.baidu.com/hm.js?62da0995840f7bcdbd4e141a4bb18192"></script>
+    
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/pace.min.js"></script>
+</head>
+
+</html>
+<body>
+
+<main class="content over-hidden" id="main">
+    <section class="outer">
+  <article id="post-js" class="article article-type-post" itemscope
+         itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+  
+    <h1 class="article-title" itemprop="name">
+      js 基础
+    </h1>
+  
+  
+
+
+
+
+            </header>
+        
+
+        
+            <div class="article-meta">
+                <a href="/2017/09/12/js/" class="article-date">
+  <time datetime="2017-09-12T15:59:59.000Z" itemprop="datePublished">2017-09-12</time>
+</a>
+                
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/前端/">前端</a>
+  </div>
+
+            </div>
+        
+
+        <div class="article-entry" itemprop="articleBody">
+            
+
+            
+
+            
+                <p>学习记录 - js基础 </p>
+<a id="more"></a>
+
+<h3 id="划重点"><a href="#划重点" class="headerlink" title="划重点"></a>划重点</h3><ul>
+<li>js分两大类数据<ul>
+<li>基本类型(<strong>栈</strong>内存)【分别占有固定内存；<strong>用完即弃</strong>】<ul>
+<li>Number</li>
+<li>String</li>
+<li>null</li>
+<li>Boolean</li>
+<li>undefined</li>
+<li>堆的引用地址（指针）</li>
+</ul>
+</li>
+<li>引用类型(<strong>堆</strong>内存)【引用地址内存固定大小，但值不定；<strong>坐等垃圾回收</strong>】<ul>
+<li>Object</li>
+<li>Function</li>
+<li>Array</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>js中内存是自动管理的，不可见。声明变量、方法时会占用一定内存</li>
+<li>js有<strong>垃圾回收机制</strong><ul>
+<li>垃圾回收机制是为了以防内存泄漏（内存泄漏就是当已经不需要某块内存时这块内存还存在着）<ul>
+<li>全局变量引起的内存泄露（全局变量不会被回收）【解决：用严格模式】</li>
+<li>闭包引起（活动对象被引用，导致闭包内变量无法回收释放）【解决：活动对象set null】</li>
+<li>被删除DOM元素的引用（DOM被删除但对象中引用还在）【解决：对象set null】</li>
+<li>定时器未清空、无限回调（定时器内部实现闭包，回调也是闭包）【解决：clearInterval、set null】</li>
+</ul>
+</li>
+<li>原理：周期性查找不再被使用的变量（根无法访问，没被引用），然后回收释放占用的内存</li>
+<li>方式：<ul>
+<li><strong>标记清除</strong><ul>
+<li>当变量进入作用域（环境）时，被标记为’进入‘，离开时被标记’离开‘。’离开‘标记的将会被回收</li>
+<li>一些优化<ul>
+<li>分代回收——新的死的快，老的活的久</li>
+<li>增量回收——量大时分多部分标记回收，需额外标记，存在微小延迟</li>
+<li>空闲时间收集——CPU有空才工作</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>引用计数（低版本的浏览器）<ul>
+<li>当变量声明并赋值引用类型时，次数+1，当此变量重新赋值时，次数-1，值=0时会被回收</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>js的闭包<ul>
+<li>闭包是一个拥有许多变量和绑定了这些变量的环境的表达式(通常是一个函数)，因而这些变量也是该表达式的一部分。简单来说，闭包是为了局部变量能一直活着，不被回收，同时可被外部访问</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><p><strong>alert</strong></p>
+<ul>
+<li><p>警告框</p>
+</li>
+<li><p>在文档加载前弹出</p>
+</li>
+</ul>
+<p><strong>confirm</strong></p>
+<ul>
+<li><p>确认框</p>
+</li>
+<li><p>确认时返回true</p>
+</li>
+<li><p>取消时返回false</p>
+</li>
+</ul>
+<p><strong>prompt</strong></p>
+<ul>
+<li><p>输入框</p>
+</li>
+<li><p>输入的所有内容均为String</p>
+</li>
+<li><p>不输人返回空字符串</p>
+</li>
+</ul>
+<p><strong>console</strong>.<strong>log</strong></p>
+<ul>
+<li>在控制台输出参数</li>
+<li>同类有 .error / .info 等等</li>
+</ul>
+<p><strong>var</strong></p>
+<ul>
+<li>声明变量</li>
+<li>不建议使用，用let代替，详情见 js es6</li>
+</ul>
+<p><strong>function</strong></p>
+<ul>
+<li>声明函数</li>
+</ul>
+<p><strong>typeof</strong></p>
+<ul>
+<li>返回参数的数据类型<ul>
+<li>string</li>
+<li>number</li>
+<li>boolean</li>
+<li>underfined</li>
+<li>….</li>
+</ul>
+</li>
+</ul>
+<p><strong>isNaN</strong></p>
+<ul>
+<li>判断参数是否NaN（NaN：Number中的不正常表现）</li>
+</ul>
+<hr>
+<h3 id="数学方法-Math"><a href="#数学方法-Math" class="headerlink" title="数学方法 Math"></a>数学方法 Math</h3><p>Math.<strong>round</strong>(x)四舍五入</p>
+<p>Math.<strong>abs</strong>(x)    绝对值</p>
+<p>Math.<strong>ceil</strong>(x)    向上取整</p>
+<p>Math.<strong>floor</strong>(x)    向下取整</p>
+<p>Math.<strong>max</strong>(x,y)    最大值</p>
+<p>Math.<strong>min</strong>(x,y)    最小值</p>
+<p>Math.<strong>pow</strong>(x,y)    x的y次幂</p>
+<p>Math.<strong>random</strong>()    随机数    0-1（不包括1    包括0）</p>
+<hr>
+<h3 id="数据转换"><a href="#数据转换" class="headerlink" title="数据转换"></a>数据转换</h3><h4 id="number"><a href="#number" class="headerlink" title="number"></a>number</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Number</span>(<span class="string">'1'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 可以转换成数字则返回数字否则返回NaN</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 出现小数会保留小数</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 内容为空则转换为0</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">parseInt</span>(<span class="string">'13.3'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 出现小数会直接取整而不是四舍五入</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 如果第一个是数字，会转换到遇到非数字为止</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 内容为空则返回NaN</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">parseFloat</span>(<span class="string">'13.3'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 出现小数保留小数</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 如果第一个是数字会转换到遇到非数字为止</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 内容为空则返回NaN</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="string"><a href="#string" class="headerlink" title="string"></a>string</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> num = <span class="number">12</span></span><br><span class="line"><span class="built_in">String</span>(num)   <span class="comment">// '12'</span></span><br><span class="line"></span><br><span class="line">num.toString() <span class="comment">// '12'</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="null和undefined没有该方法"><a href="#null和undefined没有该方法" class="headerlink" title="null和undefined没有该方法"></a>null和undefined没有该方法</h4><h4 id="boolean"><a href="#boolean" class="headerlink" title="boolean"></a>boolean</h4><p>只有“”、undefined、NaN、false、0、null会转换成false</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Boolean</span>()  <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="逻辑运算符"><a href="#逻辑运算符" class="headerlink" title="逻辑运算符"></a>逻辑运算符</h3><p>||</p>
+<ul>
+<li>or或者</li>
+</ul>
+<ul>
+<li>有真必真</li>
+</ul>
+<p>&amp;&amp;</p>
+<ul>
+<li>and并且</li>
+</ul>
+<ul>
+<li>有假必假</li>
+</ul>
+<p>！</p>
+<ul>
+<li>not非</li>
+</ul>
+<ul>
+<li>取反</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//(可用作短路运算)</span></span><br><span class="line"></span><br><span class="line"><span class="literal">true</span>&amp;&amp;(<span class="string">'执行的命令'</span>);</span><br><span class="line"></span><br><span class="line"><span class="literal">false</span>||(<span class="string">'执行的命令'</span>);</span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h3 id="循环"><a href="#循环" class="headerlink" title="循环"></a>循环</h3><p><strong>for</strong></p>
+<ul>
+<li>循环语句</li>
+</ul>
+<ul>
+<li>先判断再执行</li>
+</ul>
+<ul>
+<li>需3参数</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> i = <span class="number">0</span>;i&lt;<span class="number">10</span>;i++)&#123;</span><br><span class="line">	<span class="built_in">console</span>.log(i)   <span class="comment">// 最后输出 i = : 9</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>for</strong>…<strong>in</strong>…</p>
+<ul>
+<li>遍历数组</li>
+<li>可遍历对象，但会对象中所有方法</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> i <span class="keyword">in</span> [<span class="number">1</span>,<span class="number">2</span>,<span class="string">'c'</span>,<span class="number">4</span>])&#123;</span><br><span class="line">  	<span class="built_in">console</span>.log(i);  <span class="comment">//依次输出： 1 2 'c' 4</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>for</strong>…<strong>of</strong>…    （推荐）</p>
+<ul>
+<li>遍历数组/对象</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> i <span class="keyword">of</span> &#123;<span class="attr">a</span>:<span class="number">1</span>,<span class="attr">b</span>:<span class="number">2</span>,<span class="attr">c</span>:<span class="string">'c'</span>&#125;)&#123;</span><br><span class="line">  	<span class="built_in">console</span>.log(i);  <span class="comment">//依次输出： 1 2 'c'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>do</strong>…<strong>while</strong>…</p>
+<ul>
+<li>循环语句</li>
+</ul>
+<ul>
+<li>先执行后判断</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> i = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">do</span>&#123;</span><br><span class="line">    i++;</span><br><span class="line">&#125;<span class="keyword">while</span>(i&lt;<span class="number">5</span>)&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(i);  <span class="comment">//依次输出： 1 2 3 4 5</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>while</strong></p>
+<ul>
+<li>循环语句</li>
+</ul>
+<ul>
+<li>先判断再执行</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> i = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">while</span>(i&lt;<span class="number">5</span>)&#123;</span><br><span class="line">	<span class="built_in">console</span>.log(i); <span class="comment">//依次输出： 0 1 2 3 4</span></span><br><span class="line">    i++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Tip：es5中数组方法的遍历循环，如forEach、map等</p>
+<h5 id="循环体语"><a href="#循环体语" class="headerlink" title="循环体语"></a>循环体语</h5><p><strong>break</strong></p>
+<ul>
+<li>终断</li>
+</ul>
+<ul>
+<li>跳出当前循环</li>
+</ul>
+<p><strong>continue</strong></p>
+<ul>
+<li>中断</li>
+</ul>
+<ul>
+<li>跳过当前一次循环</li>
+</ul>
+<ul>
+<li>循环继续不跳出</li>
+</ul>
+<p><strong>return</strong></p>
+<ul>
+<li>终断</li>
+</ul>
+<ul>
+<li>停止当前的操作并返回值</li>
+</ul>
+<hr>
+<h3 id="判断"><a href="#判断" class="headerlink" title="判断"></a>判断</h3><p><strong>if</strong>…<strong>else</strong>…</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="built_in">Boolean</span>())&#123;</span><br><span class="line">    <span class="comment">// '命令'</span></span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">   <span class="comment">// '命令'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>if</strong>…<strong>else if</strong>…<strong>else</strong>…</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="built_in">Boolean</span>())&#123;</span><br><span class="line">    <span class="comment">// '命令'</span></span><br><span class="line">&#125;<span class="keyword">else</span> <span class="keyword">if</span>(<span class="built_in">Boolean</span>())&#123;</span><br><span class="line">    <span class="comment">//'命令'</span></span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">   <span class="comment">// '命令'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>switch</strong></p>
+<ul>
+<li>用于根据不同的条件执行不同的动作</li>
+</ul>
+<ul>
+<li>表达式的值会与每个case的值比较。如果匹配，则该case关联的代码会被执行</li>
+</ul>
+<ul>
+<li>通常与break或default关键字一起使用<ul>
+<li>break关键字用于跳出switch代码块</li>
+<li>default关键字来规定匹配不存在时做的事情</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span>(i)&#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="number">0</span>:</span><br><span class="line">        <span class="comment">// (执行代码);</span></span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">        <span class="comment">// (执行代码);</span></span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">        <span class="comment">// (执行代码);</span></span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">        <span class="comment">//...</span></span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">        <span class="comment">// (执行代码);</span></span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h3 id="错误处理"><a href="#错误处理" class="headerlink" title="错误处理"></a>错误处理</h3><p><strong>try</strong> 测试代码块的错误try和catch一般成对出现的</p>
+<p><strong>catch</strong> 处理错误</p>
+<p><strong>throw</strong> 创建自定义错误</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>&#123;<span class="comment">//当代码一出现错误时,跳过代码一,执行代码二,没错则跳过代码二</span></span><br><span class="line">    <span class="comment">// 代码一</span></span><br><span class="line">&#125;<span class="keyword">catch</span>(err)&#123;</span><br><span class="line">    <span class="comment">// 代码二</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>&#123;<span class="comment">//当代码一出现错误时,跳过代码一,执行代码二并创建自定义错误</span></span><br><span class="line">    <span class="comment">// 代码一</span></span><br><span class="line">    <span class="keyword">throw</span>(<span class="string">'自定义错误'</span>)</span><br><span class="line">&#125;<span class="keyword">catch</span>(err)&#123;<span class="comment">//err=自定义错误</span></span><br><span class="line">    <span class="comment">// 代码二</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h3 id="杂七杂八"><a href="#杂七杂八" class="headerlink" title="杂七杂八"></a>杂七杂八</h3><p><strong>arguments</strong> 存储实参的数组(为隐藏参数)</p>
+<h5 id="ele的坐标"><a href="#ele的坐标" class="headerlink" title="ele的坐标"></a>ele的坐标</h5><p>ele.offsetLeft = style.left    若ele已定位则按style.left,反之,则按ele到documen的left</p>
+<p>ele.offsetTop = style.top    同上理</p>
+<p>ele.offsetWidth    = style.width    获取ele的宽</p>
+<p>ele.offsetHeight = style.height    同上理</p>
+<ul>
+<li><p>我们知道offsetTop可以获得HTML元素距离上方或外层元素的位置，style.top也是可以的，二者的区别是：</p>
+<ul>
+<li>一、offsetTop返回的是数字，而style.top返回的是字符串，除了数字外还带有单位：px。</li>
+<li>二、offsetTop只读，而style.top可读写。</li>
+<li>三、如果没有给HTML元素指定过top样式，则style.top返回的是空字符串。</li>
+</ul>
+</li>
+<li><p>offsetLeft与style.left、offsetWidth与style.width、offsetHeight与style.height也是同样道理</p>
+</li>
+</ul>
+<p>ele.clientLeft  返回对象的offsetLeft属性值和到当前窗口左边的真实值之间的距离，可以理解为<strong>边框的长度</strong></p>
+<p>ele.clientTop    同上理</p>
+<p>ele.clientHeight    内容可视区域的高度</p>
+<p>ele.clientWidth    内容可视区域的宽度</p>
+<p>ele.scrollWidth    同下理</p>
+<p>ele.scrollHeight</p>
+<ul>
+<li>IE、Opera认为scrollHeight是网页内容实际高度，可以小于clientHeight。</li>
+</ul>
+<ul>
+<li>NS、FF认为scrollHeight是网页内容高度，不过最小值是clientHeight。</li>
+</ul>
+<p>ele.scrollTop    距页面的高度(滚动条)</p>
+<p>ele.scrollLeft    距页面的宽度(一般用法<code>document.body.scrollTop</code>)</p>
+<p>screen.height    屏幕的高度(分辨率高)</p>
+<p>screen.width    屏幕的宽度(分辨率宽)</p>
+<p>screen.availWidth    屏幕的宽度(空白空间)(还包括了未知部分,与想象中有出入)</p>
+<p>screen.availHeight    屏幕的高度(空白空间)(还包括了屏幕底部的开始菜单栏)</p>
+<ul>
+<li>(一般要获取屏幕的宽度用指可视区域<code>document.documentElement.clientWidth</code>)</li>
+</ul>
+<ul>
+<li>(一般要获取屏幕的高度用指可视区域<code>document.documentElement.clientHeight</code>)</li>
+</ul>
+<p>ele.screenLeft    返回窗口相对于屏幕的X坐标</p>
+<p>ele.screenTop    返回窗口相对于屏幕的Y坐标</p>
+<h5 id="事件对象的坐标"><a href="#事件对象的坐标" class="headerlink" title="事件对象的坐标"></a>事件对象的坐标</h5><p>event.screenX    鼠标相对<strong>屏幕</strong>的x坐标</p>
+<p>event.screenY    鼠标相对屏幕的x坐标</p>
+<p>event.offsetX    鼠标相对<strong>事件源元素</strong>的x坐标</p>
+<p>event.offsetY    鼠标相对事件源元素的y坐标</p>
+<p>event.clientX    鼠标相对<strong>浏览器的可视窗口</strong>的x坐标(窗口坐标)</p>
+<p>event.clientY    鼠标相对浏览器的可视窗口的y坐标(窗口坐标)</p>
+<p>event.pageX    鼠标相对<strong>document文档</strong>的x坐标(文档坐标)    ie不支持</p>
+<p>event.pageY    鼠标相对document文档的y坐标(文档坐标)    ie不支持</p>
+
+            
+        </div>
+        <footer class="article-footer">
+            
+                
+    <div id="copyright">
+        <div>
+            <b>原文作者： </b>
+            lecoler
+        </div>
+        <div>
+            <b>原文链接： </b>
+            <a href=" https://lecoler.github.io/2017/09/12/js/" target="_blank"> https://lecoler.github.io/2017/09/12/js/ </a>
+        </div>
+        <div>
+            <b> 版权声明： </b>
+            本博客所有文章除特别声明外，均采用  <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0 </a> 许可协议。转载请注明出处！
+        </div>
+    </div>
+
+
+            
+            <a data-url="https://lecoler.github.io/2017/09/12/js/" data-id="ckp6qde86003e7ilru9r3il0k"
+               class="article-share-link">分享</a>
+            
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li></ul>
+
+        </footer>
+
+    </div>
+
+    
+        
+  <nav class="article-nav">
+    
+      <a href="/2017/09/12/js-array/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            js中数组Array常用方法
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2017/09/09/css/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">css 基础</div>
+      </a>
+    
+  </nav>
+
+
+    
+
+    
+        
+            <div class="width-full flex-column-center rel" id="donate">
+    <div class="donate-text rel">
+        <span class="flex-column-center abs"><i class="fe fe-heart-o"></i>打赏</span>
+        <span class="abs break-nowrap">欣赏此文？请作者喝杯咖啡！</span>
+    </div>
+    <div class="donate-box flex-center rel">
+        <a id="aliPay" title="支付宝付款码"></a>
+        <a id="weChat" title="微信付款码"></a>
+    </div>
+    <div id="donate-qrBox" class="hidden abs over-hidden hideQR"></div>
+    <img src="/images/zfb.jpg" class="hidden" />
+    <img src="/images/wx.jpg" class="hidden" />
+</div>
+<script>
+    let qr = {
+        aliPay: '/images/zfb.jpg',
+        weChat: '/images/wx.jpg',
+    };
+    let qrBox = $('#donate-qrBox');
+    qrBox.click(() => {
+        qrBox.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', () => {
+            qrBox.addClass('hidden');
+        }).toggleClass('showQR hideQR', 0)
+    });
+    $('#donate>.donate-box>a').click(function () {
+        qrBox.css('background-image', 'url(' + qr[$(this).attr('id')] + ')').unbind('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend').toggleClass('hidden showQR hideQR', 1);
+    });
+</script>
+
+        
+        <div class="directory">
+    <div class="height-full fix" id="directory-list"></div>
+    <div class="fix flex-center active" id="directory-btn">
+        <a title="目录"><i class="fe fe-book"></i></a>
+    </div>
+</div>
+<script>
+    const $html = $('.article-entry').children();
+    const $list = $('#directory-list').empty();
+    const $btn = $('#directory-btn').on('click',()=>{
+        $list.toggleClass('active')
+    })
+    const Tags = ['H1','H2','H3','H4','H5','H6','H7']
+    for(let dom of $html.toArray()){
+        let type
+        if (Tags.some((i, k) => i == $(dom).get(0).tagName && (type = k + 1))) {
+            const id = $(dom).attr('id');
+            const $a = $(`<a href="#${id}" title="${id}" class="block break-ellipsis">${id}</a>`).css({
+                'padding-left': `${(type-1)*0.5}rem`,
+                'font-size': `${1.6 - type * 0.02}rem`,
+                'text-decoration': 'none',
+                'color': '#fff',
+            })
+            $list.append($a);
+        }
+    }
+</script>
+
+        
+    <div id="vcomments"></div>
+    <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+    <script type="text/javascript">
+      new Valine({
+            el: '#vcomments',
+            appId: 'TblyYUGKjeqtAejC6buEAYiw-gzGzoHsz',
+            appKey: 'FoUxsfWPrMCqDswWNoTIO1Dc',
+            placeholder: '回复',
+            avatar: 'retro',
+            visitor: 'true'
+        })
+    </script>
+  
+  
+        <script>
+    const items = $('.highlight', '.article-entry');
+    const list = items && items.toArray();
+    for (let item of list) {
+        let copyText;
+        const code = item.getElementsByClassName('code')[0];
+        if (code) {
+            copyText = code.innerText;
+        }
+        const copyBtn = $('<button>复制</button>');
+        copyBtn.css({
+            position: 'absolute',
+            right: '10px',
+            top: '10px',
+            cursor: 'pointer'
+        });
+        copyBtn.on('click', function () {
+            if (copyText) {
+                const dom = $(`<textarea >${copyText}</textarea>`);
+                dom.css({
+                    opacity: 0,
+                    position: 'absolute',
+                    width: '1px',
+                    height: '1px'
+                });
+                this.appendChild(dom.get(0));
+                dom.select();
+                !document.execCommand('Copy') && alert('抱歉，浏览器不支持复制功能');
+                dom.remove();
+            }
+        })
+        item.appendChild(copyBtn.get(0));
+    }
+</script>
+    
+
+</article>
+
+
+
+
+</section>
+    <footer class="footer">
+  <div class="outer">
+    <div class="float-right">
+      <ul class="list-inline">
+    <li>
+        <i class="fe fe-bar-chart"></i>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>
+        </span>
+    </li>
+    <li>
+        <i class="fe fe-smile-alt"></i>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>
+        </span>
+    </li>
+</ul>
+
+    </div>
+    <ul class="list-inline">
+      <li>&copy; 2017 - 2021 lecoler博客</li>
+      <li>由 <a href="http://hexo.io/" target="_blank">Hexo</a> 驱动</li>
+      <li>自制主题 - zero 是基于 <a href="https://github.com/zhwangart/hexo-theme-ocean" target="_blank">Ocean</a> 二次开发</li>
+    </ul>
+    </ul>
+  </div>
+</footer>
+
+</main>
+<aside class="sidebar">
+    <button class="navbar-toggle"></button>
+
+<nav class="navbar">
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">主页</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/archives">归档</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/categories">分类</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tags">标签</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">关于</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="搜索"><i class="fe fe-search"></i>搜索</a>
+    </li>
+  </ul>
+</nav>
+
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+        <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+          <i class="fe fe-feed"></i>
+        </a>
+      
+    </li>
+  </ul>
+</nav>
+
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="搜索关键字...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+
+</div>
+
+</aside>
+<script src="/js/lazyload.min.js"></script>
+<script src="/js/zero.js"></script>
+
+    <script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+    <script src="/js/search.js"></script>
+
+
+
+    <script src="https://cdn.bootcss.com/canvas-nest.js/2.0.4/canvas-nest.js"
+            color="0,0,0"
+            opacity='0.5'
+            zIndex="-1"
+            count="20"></script>
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    
+    
+        <meta name="keywords" content="博客, web前端, JavaScript, css, html, 编程, 程序, lecoler, 问题,">
+    
+    
+        <meta name="description" content="lecoler的个人博客，用于记录web前端以及实际开发中遇到的问题及解决方案，还会有各种开发优化方案及疑难杂症">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>
+        用shell脚本实现简易的oss上传 |
+        
+        lecoler博客</title>
+    
+        <link rel="shortcut icon" href="/favicon.ico">
+    
+    <link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/css/style.css">
+    
+        <link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+    
+    
+        <script src="https://hm.baidu.com/hm.js?62da0995840f7bcdbd4e141a4bb18192"></script>
+    
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/pace.min.js"></script>
+</head>
+
+</html>
+<body>
+
+<main class="content over-hidden" id="main">
+    <section class="outer">
+  <article id="post-shell-oss" class="article article-type-post" itemscope
+         itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+  
+    <h1 class="article-title" itemprop="name">
+      用shell脚本实现简易的oss上传
+    </h1>
+  
+  
+
+
+
+
+            </header>
+        
+
+        
+            <div class="article-meta">
+                <a href="/2020/10/15/shell-oss/" class="article-date">
+  <time datetime="2020-10-15T16:00:00.000Z" itemprop="datePublished">2020-10-16</time>
+</a>
+                
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/shell/">shell</a>
+  </div>
+
+            </div>
+        
+
+        <div class="article-entry" itemprop="articleBody">
+            
+
+            
+
+            
+                <p>用shell写了个简易的阿里oss文件上传，源码如下    </p>
+<a id="more"></a>
+<h3 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h3><p>确保安装了以下binary：</p>
+<ul>
+<li>openssl</li>
+<li>base64</li>
+<li>curl</li>
+</ul>
+<p>验证是否安装，打开命令行输入以下指令</p>
+<p>有返回相应的版本信息，即已安装</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> openssl</span></span><br><span class="line">openssl version</span><br><span class="line"><span class="meta">#</span><span class="bash"> base64</span></span><br><span class="line">base64 --version</span><br><span class="line"><span class="meta">#</span><span class="bash">curl</span></span><br><span class="line">curl -V</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用手册"><a href="#使用手册" class="headerlink" title="使用手册"></a>使用手册</h3><ol>
+<li><a href="/static/shell/oss.sh">下载脚本文件</a></li>
+<li>打开脚本文件，填入相关配置信息，<code>AccessKeyId,AccessKeySecret,BucketName...</code></li>
+<li>于shell中执行<code>./oss.sh 要上传的文件 上传到oss的位置</code></li>
+</ol>
+<p><strong>Tip</strong></p>
+<ul>
+<li>Win下 可下载 git，使用git 的 <code>git bash</code>执行<code>.sh</code>脚本文件</li>
+</ul>
+<h3 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h3><p>oss.sh</p>
+<figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 配置*</span></span><br><span class="line">AccessKeyId=""</span><br><span class="line">AccessKeySecret=""</span><br><span class="line">BucketName=""</span><br><span class="line">Host="$&#123;BucketName&#125;.oss-xx-xxxx.aliyuncs.com"</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 需上传的文件（绝对路径）</span></span><br><span class="line">file=$1</span><br><span class="line"><span class="meta">#</span><span class="bash"> 需上传的key（oss上的存放路径，包含自身文件名）</span></span><br><span class="line">key=$2</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 判断是否传参</span></span><br><span class="line">if [ -z "$file" ] || [ -z "$key" ]; then</span><br><span class="line">    printf "\n%s\n\n" "帮助"</span><br><span class="line">    printf " %-10s %-20s\n" "第一个参数" "需上传文件绝对路径"</span><br><span class="line">    printf " %-10s %-20s\n\n" "" "如：/d/items/test/pic.jpg"</span><br><span class="line">    printf " %-10s %-20s\n" "第二个参数" "上传到oss的存放路径（从bucket根目录→上传文件名）"</span><br><span class="line">    printf " %-10s %-20s\n\n" "" "如：test/pic.jpg"</span><br><span class="line">    printf "\n\n\t%s\n" "例子：./oss.sh /d/items/test/pic.jpg test/pic.jp"</span><br><span class="line">    exit 0</span><br><span class="line">fi</span><br><span class="line">printf "\n %s \n\n" "Start to upload files($&#123;file&#125;) to oss(/$&#123;BucketName&#125;/$&#123;key&#125;)"</span><br><span class="line"><span class="meta">#</span><span class="bash"> 当前时间</span></span><br><span class="line">DateValue=$(env LANG=en_US.UTF-8 date -u "+%a, %d %b %Y %T GMT")</span><br><span class="line"><span class="meta">#</span><span class="bash"> 请求数据类型</span></span><br><span class="line">ContentType="application/octet-stream"</span><br><span class="line"><span class="meta">#</span><span class="bash"> 路径</span></span><br><span class="line">Resource="/$&#123;BucketName&#125;/$&#123;key&#125;"</span><br><span class="line"><span class="meta">#</span><span class="bash"> 字符串</span></span><br><span class="line">StringToSign="PUT\n\n$&#123;ContentType&#125;\n$&#123;DateValue&#125;\n$&#123;Resource&#125;"</span><br><span class="line"><span class="meta">#</span><span class="bash"> 加密</span></span><br><span class="line">Sign=$(echo -en "$&#123;StringToSign&#125;" | openssl sha1 -hmac $&#123;AccessKeySecret&#125; -binary | base64)</span><br><span class="line"><span class="meta">#</span><span class="bash"> 开始请求</span></span><br><span class="line">Result=$(curl -i -q -X PUT -T "$&#123;file&#125;" \</span><br><span class="line">    -H "Host: $&#123;Host&#125;" \</span><br><span class="line">    -H "Date: $&#123;DateValue&#125;" \</span><br><span class="line">    -H "Content-Type: $&#123;ContentType&#125;" \</span><br><span class="line">    -H "Authorization: OSS $&#123;AccessKeyId&#125;:$&#123;Sign&#125;" \</span><br><span class="line">    -H "Accept: */*" \</span><br><span class="line">    "https://$&#123;Host&#125;/$&#123;key&#125;")</span><br><span class="line">echo "$&#123;Result&#125;"</span><br><span class="line">printf "\n %s \n" "The end!"</span><br><span class="line">echo "Press any key to exit!"</span><br><span class="line">read -rn 1</span><br><span class="line">exit 0</span><br></pre></td></tr></table></figure>
+
+
+            
+        </div>
+        <footer class="article-footer">
+            
+                
+    <div id="copyright">
+        <div>
+            <b>原文作者： </b>
+            lecoler
+        </div>
+        <div>
+            <b>原文链接： </b>
+            <a href=" https://lecoler.github.io/2020/10/15/shell-oss/" target="_blank"> https://lecoler.github.io/2020/10/15/shell-oss/ </a>
+        </div>
+        <div>
+            <b> 版权声明： </b>
+            本博客所有文章除特别声明外，均采用  <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0 </a> 许可协议。转载请注明出处！
+        </div>
+    </div>
+
+
+            
+            <a data-url="https://lecoler.github.io/2020/10/15/shell-oss/" data-id="ckp6qde7e002m7ilrld73cfmy"
+               class="article-share-link">分享</a>
+            
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/oss/">oss</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sh/">sh</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/工具/">工具</a></li></ul>
+
+        </footer>
+
+    </div>
+
+    
+        
+  <nav class="article-nav">
+    
+      <a href="/2021/01/18/com/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            串口（com）
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2020/09/15/Android-ipScan/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">安卓获取所在局域网的其他设备IP</div>
+      </a>
+    
+  </nav>
+
+
+    
+
+    
+        
+            <div class="width-full flex-column-center rel" id="donate">
+    <div class="donate-text rel">
+        <span class="flex-column-center abs"><i class="fe fe-heart-o"></i>打赏</span>
+        <span class="abs break-nowrap">欣赏此文？请作者喝杯咖啡！</span>
+    </div>
+    <div class="donate-box flex-center rel">
+        <a id="aliPay" title="支付宝付款码"></a>
+        <a id="weChat" title="微信付款码"></a>
+    </div>
+    <div id="donate-qrBox" class="hidden abs over-hidden hideQR"></div>
+    <img src="/images/zfb.jpg" class="hidden" />
+    <img src="/images/wx.jpg" class="hidden" />
+</div>
+<script>
+    let qr = {
+        aliPay: '/images/zfb.jpg',
+        weChat: '/images/wx.jpg',
+    };
+    let qrBox = $('#donate-qrBox');
+    qrBox.click(() => {
+        qrBox.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', () => {
+            qrBox.addClass('hidden');
+        }).toggleClass('showQR hideQR', 0)
+    });
+    $('#donate>.donate-box>a').click(function () {
+        qrBox.css('background-image', 'url(' + qr[$(this).attr('id')] + ')').unbind('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend').toggleClass('hidden showQR hideQR', 1);
+    });
+</script>
+
+        
+        <div class="directory">
+    <div class="height-full fix" id="directory-list"></div>
+    <div class="fix flex-center active" id="directory-btn">
+        <a title="目录"><i class="fe fe-book"></i></a>
+    </div>
+</div>
+<script>
+    const $html = $('.article-entry').children();
+    const $list = $('#directory-list').empty();
+    const $btn = $('#directory-btn').on('click',()=>{
+        $list.toggleClass('active')
+    })
+    const Tags = ['H1','H2','H3','H4','H5','H6','H7']
+    for(let dom of $html.toArray()){
+        let type
+        if (Tags.some((i, k) => i == $(dom).get(0).tagName && (type = k + 1))) {
+            const id = $(dom).attr('id');
+            const $a = $(`<a href="#${id}" title="${id}" class="block break-ellipsis">${id}</a>`).css({
+                'padding-left': `${(type-1)*0.5}rem`,
+                'font-size': `${1.6 - type * 0.02}rem`,
+                'text-decoration': 'none',
+                'color': '#fff',
+            })
+            $list.append($a);
+        }
+    }
+</script>
+
+        
+    <div id="vcomments"></div>
+    <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+    <script type="text/javascript">
+      new Valine({
+            el: '#vcomments',
+            appId: 'TblyYUGKjeqtAejC6buEAYiw-gzGzoHsz',
+            appKey: 'FoUxsfWPrMCqDswWNoTIO1Dc',
+            placeholder: '回复',
+            avatar: 'retro',
+            visitor: 'true'
+        })
+    </script>
+  
+  
+        <script>
+    const items = $('.highlight', '.article-entry');
+    const list = items && items.toArray();
+    for (let item of list) {
+        let copyText;
+        const code = item.getElementsByClassName('code')[0];
+        if (code) {
+            copyText = code.innerText;
+        }
+        const copyBtn = $('<button>复制</button>');
+        copyBtn.css({
+            position: 'absolute',
+            right: '10px',
+            top: '10px',
+            cursor: 'pointer'
+        });
+        copyBtn.on('click', function () {
+            if (copyText) {
+                const dom = $(`<textarea >${copyText}</textarea>`);
+                dom.css({
+                    opacity: 0,
+                    position: 'absolute',
+                    width: '1px',
+                    height: '1px'
+                });
+                this.appendChild(dom.get(0));
+                dom.select();
+                !document.execCommand('Copy') && alert('抱歉，浏览器不支持复制功能');
+                dom.remove();
+            }
+        })
+        item.appendChild(copyBtn.get(0));
+    }
+</script>
+    
+
+</article>
+
+
+
+
+</section>
+    <footer class="footer">
+  <div class="outer">
+    <div class="float-right">
+      <ul class="list-inline">
+    <li>
+        <i class="fe fe-bar-chart"></i>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>
+        </span>
+    </li>
+    <li>
+        <i class="fe fe-smile-alt"></i>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>
+        </span>
+    </li>
+</ul>
+
+    </div>
+    <ul class="list-inline">
+      <li>&copy; 2017 - 2021 lecoler博客</li>
+      <li>由 <a href="http://hexo.io/" target="_blank">Hexo</a> 驱动</li>
+      <li>自制主题 - zero 是基于 <a href="https://github.com/zhwangart/hexo-theme-ocean" target="_blank">Ocean</a> 二次开发</li>
+    </ul>
+    </ul>
+  </div>
+</footer>
+
+</main>
+<aside class="sidebar">
+    <button class="navbar-toggle"></button>
+
+<nav class="navbar">
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">主页</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/archives">归档</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/categories">分类</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tags">标签</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">关于</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="搜索"><i class="fe fe-search"></i>搜索</a>
+    </li>
+  </ul>
+</nav>
+
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+        <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+          <i class="fe fe-feed"></i>
+        </a>
+      
+    </li>
+  </ul>
+</nav>
+
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="搜索关键字...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+
+</div>
+
+</aside>
+<script src="/js/lazyload.min.js"></script>
+<script src="/js/zero.js"></script>
+
+    <script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+    <script src="/js/search.js"></script>
+
+
+
+    <script src="https://cdn.bootcss.com/canvas-nest.js/2.0.4/canvas-nest.js"
+            color="0,0,0"
+            opacity='0.5'
+            zIndex="-1"
+            count="20"></script>
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+</body>
+</html>

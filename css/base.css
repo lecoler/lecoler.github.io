@@ -1,0 +1,179 @@
+*{
+    box-sizing: border-box;
+}
+/*宽高*/
+.height-full {
+    height: 100%;
+}
+.height-half {
+    height: 50%;
+}
+.width-full {
+    width: 100%;
+}
+.width-half {
+    width: 50%;
+}
+/*全部充满*/
+.full {
+    width: 100%;
+    height: 100%;
+}
+/*宽高结束*/
+
+/*overflow相关*/
+.over-scroll {
+    overflow: scroll;
+}
+.over-hidden {
+    overflow: hidden;
+}
+.over-visible {
+    overflow: visible !important;
+}
+/*overflow结束*/
+
+/*浮动*/
+.fl {
+    float: left;
+}
+.fr {
+    float: right;
+}
+/*去浮动*/
+.clearFix {
+    zoom: 1;
+}
+.clearFix:after {
+    content: " ";
+    width: 0;
+    height: 0;
+    visibility: hidden;
+    display: block;
+    clear: both;
+    overflow: hidden;
+}
+/*浮动结束*/
+
+/*相对绝对*/
+.rel {
+    position: relative;
+}
+.abs {
+    position: absolute;
+}
+.fix {
+    position: fixed;
+}
+/*相对绝对*/
+
+/*flex部分*/
+.flex {
+    display: flex;
+}
+.flex-column {
+    display: flex;
+    flex-direction: column;
+}
+.flex1 {
+    flex: 1;
+}
+.flex2 {
+    flex: 2;
+}
+.flex3 {
+    flex: 3;
+}
+/*不压缩当前子元素*/
+.flex-shrink {
+    flex-shrink: 0;
+}
+/*允许换行*/
+.flex-wrap {
+    flex-wrap: wrap;
+}
+/*纵向垂直水平都居中*/
+.flex-column-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+/*垂直水平都居中*/
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+/*仅仅垂直居中*/
+.flex-center-vertical {
+    display: flex;
+    align-items: center;
+}
+/*水平均分垂直居中*/
+.flex-around-vertical {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+/*垂直居中,两边靠边,中间均分*/
+.flex-between-vertical {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+/*flex结束*/
+
+/*基本display*/
+.block {
+    display: block;
+}
+.inline {
+    display: inline;
+}
+.inline-block {
+    display: inline-block;
+}
+.hidden {
+    display: none;
+}
+/*display结束*/
+
+/*text对齐*/
+.text-center {
+    text-align: center;
+}
+.text-left {
+    text-align: left;
+}
+.text-right {
+    text-align: right;
+}
+/*text对齐结束*/
+
+/*水平对齐*/
+.vertical-middle {
+    vertical-align: middle;
+}
+.vertical-bottom {
+    vertical-align: bottom;
+}
+/*水平对齐结束*/
+
+/*文字超出样式*/
+/*超出换行*/
+.break-word {
+    word-break: break-all;
+}
+/*单行省略号*/
+.break-ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+/*超出不换行*/
+.break-nowrap {
+    white-space: nowrap;
+    overflow: hidden;
+}
+/*文字超出样式结束*/

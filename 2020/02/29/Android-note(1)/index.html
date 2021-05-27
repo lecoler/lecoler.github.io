@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    
+    
+        <meta name="keywords" content="博客, web前端, JavaScript, css, html, 编程, 程序, lecoler, 问题,">
+    
+    
+        <meta name="description" content="lecoler的个人博客，用于记录web前端以及实际开发中遇到的问题及解决方案，还会有各种开发优化方案及疑难杂症">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>
+        安卓开发——笔记（1） |
+        
+        lecoler博客</title>
+    
+        <link rel="shortcut icon" href="/favicon.ico">
+    
+    <link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/css/style.css">
+    
+        <link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+    
+    
+        <script src="https://hm.baidu.com/hm.js?62da0995840f7bcdbd4e141a4bb18192"></script>
+    
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/pace.min.js"></script>
+</head>
+
+</html>
+<body>
+
+<main class="content over-hidden" id="main">
+    <section class="outer">
+  <article id="post-Android-note(1)" class="article article-type-post" itemscope
+         itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+  
+    <h1 class="article-title" itemprop="name">
+      安卓开发——笔记（1）
+    </h1>
+  
+  
+
+
+
+
+            </header>
+        
+
+        
+            <div class="article-meta">
+                <a href="/2020/02/29/Android-note(1)/" class="article-date">
+  <time datetime="2020-02-29T16:00:00.000Z" itemprop="datePublished">2020-03-01</time>
+</a>
+                
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+            </div>
+        
+
+        <div class="article-entry" itemprop="articleBody">
+            
+
+            
+
+            
+                <p>记录安卓开发时，所遇到的问题及方法           </p>
+<a id="more"></a>
+
+<h3 id="调试输出"><a href="#调试输出" class="headerlink" title="调试输出"></a>调试输出</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> android.util.Log;</span><br><span class="line"></span><br><span class="line">Log.v(<span class="string">"a"</span>, <span class="string">"Haha , this is a Verbose of MyAndroid. "</span>);</span><br><span class="line">Log.d(<span class="string">"a"</span>, <span class="string">"Haha , this is a Debug of MyAndroid. "</span>);</span><br><span class="line">Log.i(<span class="string">"a"</span>, <span class="string">"Haha , this is a Info of MyAndroid. "</span>);</span><br><span class="line">Log.w(<span class="string">"a"</span>, <span class="string">"Haha , this is a Warning of MyAndroid. "</span>);</span><br><span class="line">Log.e(<span class="string">"a"</span>, <span class="string">"Haha , this is a Error of MyAndroid. "</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="点击事件获取文本内容"><a href="#点击事件获取文本内容" class="headerlink" title="点击事件获取文本内容"></a>点击事件获取文本内容</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> TextView value = (TextView) findViewById(R.id.textView);</span><br><span class="line"></span><br><span class="line">Button btn = <span class="keyword">new</span> Button(<span class="keyword">this</span>);</span><br><span class="line"><span class="comment">//绑定点击事件</span></span><br><span class="line">btn.setOnClickListener(<span class="keyword">new</span> View.OnClickListener() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View v)</span> </span>&#123;</span><br><span class="line">        String text = ((Button) v).getText().toString();</span><br><span class="line">        value.setText(value.getText()+text);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="在xml里绑定事件并传参数"><a href="#在xml里绑定事件并传参数" class="headerlink" title="在xml里绑定事件并传参数"></a>在<code>xml</code>里绑定事件并传参数</h3><p><code>xml</code>部分代码</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Button</span> </span></span><br><span class="line"><span class="tag">        <span class="attr">android:onClick</span>=<span class="string">"click"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:tag</span>=<span class="string">"params"</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>java</code>部分代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">click</span><span class="params">(View view)</span></span>&#123;</span><br><span class="line">    String param = view.getTag().toString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="引用res里的资源，类型变为-View"><a href="#引用res里的资源，类型变为-View" class="headerlink" title="引用res里的资源，类型变为 View"></a>引用res里的资源，类型变为 <code>View</code></h3><p>通过加载器 <code>LayoutInflater</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">LayoutInflater tableItem = LayoutInflater.from(<span class="keyword">this</span>);</span><br><span class="line">View viewItem = tableItem.inflate(R.layout.fbutton_item, <span class="keyword">null</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="handler发送消息-线程间通讯"><a href="#handler发送消息-线程间通讯" class="headerlink" title="handler发送消息(线程间通讯)"></a>handler发送消息(线程间通讯)</h3><p>子线程里无法调用ui，通过handler发送消息至ui线程</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> SHOW_TOAST = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">private</span> Handler mHandler = <span class="keyword">null</span>;    </span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">()</span></span>&#123;</span><br><span class="line">    Message msg = <span class="keyword">new</span> Message();</span><br><span class="line">    msg.what = SHOW_TOAST;</span><br><span class="line">    msg.obj = <span class="string">"信息"</span>;</span><br><span class="line">    mHandler.sendMessage(msg);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 发送消息</span></span><br><span class="line"><span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">MsgHandler</span> <span class="keyword">extends</span> <span class="title">Handler</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleMessage</span><span class="params">(Message msg)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">switch</span> (msg.what)&#123;</span><br><span class="line">            <span class="keyword">case</span> SHOW_TOAST:</span><br><span class="line">                String text = msg.obj.toString();</span><br><span class="line">                Toast toast = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG);</span><br><span class="line">                toast.setGravity(Gravity.CENTER, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">                toast.show();</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">default</span>:</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException(<span class="string">"Unexpected value: "</span> + msg.what);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="广播事件"><a href="#广播事件" class="headerlink" title="广播事件"></a>广播事件</h3><p><strong>Tip:</strong></p>
+<ul>
+<li>可一个接收器 对应多个 action ( 用 intent-filter 包裹) 或 多个接收器</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">receiver</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:name</span>=<span class="string">".MyBroadcastReceiver"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:enabled</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:exported</span>=<span class="string">"true"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"android.intent.action.BOOT_COMPLETED"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"android.intent.action.DOWNLOAD_COMPLETE"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">receiver</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="将数据写入本地缓存"><a href="#将数据写入本地缓存" class="headerlink" title="将数据写入本地缓存"></a>将数据写入本地缓存</h3><p>用 <code>SharedPreferences</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> SharedPreferences sf;</span><br><span class="line"><span class="keyword">private</span> SharedPreferences.Editor edit;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 链接库</span></span><br><span class="line">    sf = getSharedPreferences(getResources().getString(R.string.app_name), Context.MODE_PRIVATE);</span><br><span class="line">    <span class="comment">// 编辑器</span></span><br><span class="line">    edit = sf.edit();</span><br><span class="line">    <span class="comment">// set 值</span></span><br><span class="line">    edit.putString(<span class="string">"key"</span>,<span class="string">"value"</span>);</span><br><span class="line">    edit.commit();</span><br><span class="line">    <span class="comment">// get 值</span></span><br><span class="line">    sf.getString(<span class="string">"key"</span>,<span class="string">""</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="播放mp3音频"><a href="#播放mp3音频" class="headerlink" title="播放mp3音频"></a>播放mp3音频</h3><ul>
+<li>在<code>main</code>目录下 新建个 <code>assets</code>目录 存放<code>mp3</code>音频</li>
+<li>用 <code>MediaPlayer</code> 播放音频</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> MediaPlayer musicPlay = <span class="keyword">null</span>;</span><br><span class="line"><span class="keyword">private</span> AssetManager assetManager = <span class="keyword">null</span>;</span><br><span class="line"><span class="keyword">private</span> List&lt;AssetFileDescriptor&gt; musicQueue = <span class="keyword">new</span> ArrayList&lt;AssetFileDescriptor&gt;();</span><br><span class="line"><span class="comment">// 初始化播放器</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">initPlayer</span><span class="params">(Context context)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 获取asset文件管理器</span></span><br><span class="line">    assetManager = context.getAssets();</span><br><span class="line">    <span class="comment">// new 播放器</span></span><br><span class="line">    musicPlay = <span class="keyword">new</span> MediaPlayer();</span><br><span class="line">    <span class="comment">// 播放结束监听</span></span><br><span class="line">    musicPlay.setOnCompletionListener(<span class="keyword">new</span> MediaPlayer.OnCompletionListener() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCompletion</span><span class="params">(MediaPlayer mp)</span> </span>&#123;</span><br><span class="line">            <span class="comment">// 存在播放队列</span></span><br><span class="line">            <span class="keyword">if</span> (musicQueue.size() != <span class="number">0</span>) &#123;</span><br><span class="line">                play(musicQueue.get(<span class="number">0</span>));</span><br><span class="line">                musicQueue.remove(<span class="number">0</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 开始播放</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">play</span><span class="params">(AssetFileDescriptor music)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">// 存在播放任务,追加队列中</span></span><br><span class="line">        <span class="keyword">if</span> (musicPlay.isPlaying()) &#123;</span><br><span class="line">            musicQueue.add(music);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 重置播放器</span></span><br><span class="line">        musicPlay.reset();</span><br><span class="line">        <span class="comment">// 设置播放资源</span></span><br><span class="line">        musicPlay.setDataSource(music.getFileDescriptor(), music.getStartOffset(), music.getLength());</span><br><span class="line">        <span class="comment">// 预加载</span></span><br><span class="line">        musicPlay.prepare();</span><br><span class="line">        <span class="comment">// 开始</span></span><br><span class="line">        musicPlay.start();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 选择播放音频</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">selectMusic</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">// 播放 test.mp3</span></span><br><span class="line">        <span class="keyword">this</span>.play(assetManager.openFd(<span class="string">"test.mp3"</span>));</span><br><span class="line">    &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="解析JSON"><a href="#解析JSON" class="headerlink" title="解析JSON"></a>解析JSON</h3><ul>
+<li>用 阿里的 <code>fastjson</code></li>
+</ul>
+<p>app 配置文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">	implementation &apos;com.alibaba:fastjson:1.2.62&apos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>简单dome</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 引</span></span><br><span class="line"><span class="keyword">import</span> com.alibaba.fastjson.JSONObject;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 反序列化</span></span><br><span class="line">JSONObject data = JSONObject.parseObject(res);</span><br><span class="line">String type = data.getString(<span class="string">"type"</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="socket"><a href="#socket" class="headerlink" title="socket"></a><code>socket</code></h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 连接 socket</span></span><br><span class="line">socket = <span class="keyword">new</span> Socket(SOCKET_IP, SOCKET_PORT);</span><br><span class="line"></span><br><span class="line"><span class="comment">//构建IO</span></span><br><span class="line">InputStream is = socket.getInputStream();</span><br><span class="line">OutputStream os = socket.getOutputStream();</span><br><span class="line">bw = <span class="keyword">new</span> BufferedWriter(<span class="keyword">new</span> OutputStreamWriter(os));</span><br><span class="line"></span><br><span class="line"><span class="comment">//读取服务器返回的消息</span></span><br><span class="line">br = <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> InputStreamReader(is));</span><br><span class="line"></span><br><span class="line"><span class="comment">//向服务器端发送一条消息</span></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    bw.write(<span class="string">"msg"</span> + <span class="string">"\n"</span>);</span><br><span class="line">    bw.flush();</span><br><span class="line">&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 持续读消息</span></span><br><span class="line">String res;</span><br><span class="line"><span class="keyword">while</span> ((res = br.readLine()) != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="comment">// 当读到消息 do something              </span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="弹窗AlertDialog"><a href="#弹窗AlertDialog" class="headerlink" title="弹窗AlertDialog"></a>弹窗<code>AlertDialog</code></h3><p>基本用法</p>
+<ul>
+<li>setTitle ：为对话框设置标题</li>
+<li>setIcon ：为对话框设置图标</li>
+<li>setMessage：为对话框设置内容</li>
+<li>setView ： 给对话框设置自定义样式</li>
+<li>setItems ：设置对话框要显示的一个list，一般用于显示几个命令时</li>
+<li>setMultiChoiceItems ：用来设置对话框显示一系列的复选框</li>
+<li>setSingleChoiceItems ：用来设置对话框显示一系列的单选框</li>
+<li>setNeutralButton    ：普通按钮</li>
+<li>setPositiveButton   ：给对话框添加”Yes”按钮</li>
+<li>setNegativeButton ：对话框添加”No”按钮</li>
+<li>create ： 创建对话框</li>
+<li>show ：显示对话框</li>
+</ul>
+<p>dome</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">AlertDialog.Builder builder = <span class="keyword">new</span> AlertDialog.Builder(<span class="keyword">this</span>);</span><br><span class="line"></span><br><span class="line">builder.setTitle(<span class="string">"这是标题"</span>)</span><br><span class="line">    .setMessage(<span class="string">"这是内容"</span>)</span><br><span class="line">    .setNegativeButton(<span class="string">"取消"</span>, <span class="keyword">null</span>)</span><br><span class="line">    .create();</span><br><span class="line"></span><br><span class="line">builder.setPositiveButton(<span class="string">"确定"</span>, <span class="keyword">new</span> DialogInterface.OnClickListener() &#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(DialogInterface dialog, <span class="keyword">int</span> which)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// do something</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line">builder.show();</span><br></pre></td></tr></table></figure>
+
+<h3 id="打开跳转至无障碍设置页面"><a href="#打开跳转至无障碍设置页面" class="headerlink" title="打开跳转至无障碍设置页面"></a>打开跳转至无障碍设置页面</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Intent intent = <span class="keyword">new</span> Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);</span><br><span class="line">intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);</span><br><span class="line"><span class="keyword">this</span>.getApplicationContext().startActivity(intent);</span><br></pre></td></tr></table></figure>
+
+<h3 id="通过shell静默开启无障碍模式"><a href="#通过shell静默开启无障碍模式" class="headerlink" title="通过shell静默开启无障碍模式"></a>通过shell静默开启无障碍模式</h3><ul>
+<li>root权限</li>
+</ul>
+<p>开启</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 包名/程序名</span></span><br><span class="line">String myAs = <span class="keyword">this</span>.getPackageName() + <span class="string">"/"</span> + MainAccessibilityService.class.getName();</span><br><span class="line"><span class="comment">// 获取目前设置无障碍模式的app</span></span><br><span class="line">String nowAs = shellExec(<span class="string">"settings get secure enabled_accessibility_services"</span>);</span><br><span class="line">nowAs.replace(<span class="string">"\n"</span>, <span class="string">""</span>);</span><br><span class="line"><span class="comment">// 目前存在其它时,追加 : 隔开</span></span><br><span class="line"><span class="keyword">if</span> (nowAs.length() &gt; <span class="number">1</span> &amp;&amp; !nowAs.contains(myAs)) &#123;</span><br><span class="line">    nowAs = <span class="string">":"</span> + nowAs;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 不存在时,即设置.存在直接启动</span></span><br><span class="line"><span class="keyword">if</span>(!nowAs.contains(myAs))&#123;</span><br><span class="line">    String cmd = <span class="string">"settings put secure enabled_accessibility_services "</span> + myAs + nowAs;</span><br><span class="line">    shellExec(cmd);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 启动</span></span><br><span class="line">shellExec(<span class="string">"settings put secure accessibility_enabled 1"</span>);</span><br></pre></td></tr></table></figure>
+
+<p>关闭</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 包名/程序名</span></span><br><span class="line">String myAs = <span class="keyword">this</span>.getPackageName() + <span class="string">"/"</span> + MainAccessibilityService.class.getName();</span><br><span class="line"><span class="comment">// 获取目前的配置</span></span><br><span class="line">String nowAs = shellExec(<span class="string">"settings get secure enabled_accessibility_services"</span>);</span><br><span class="line">nowAs.replace(<span class="string">"\n"</span>, <span class="string">""</span>);</span><br><span class="line"><span class="comment">// 找到需关闭的程序对应下标</span></span><br><span class="line"><span class="keyword">int</span> index = nowAs.indexOf(myAs);</span><br><span class="line"><span class="comment">// 找到后</span></span><br><span class="line"><span class="keyword">if</span> (index &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="comment">// 前面的 : 下标</span></span><br><span class="line">    <span class="keyword">int</span> beforeIndex = nowAs.lastIndexOf(<span class="string">":"</span>, index);</span><br><span class="line">    <span class="comment">// 后面的 : 下标</span></span><br><span class="line">    <span class="keyword">int</span> afterIndex = nowAs.indexOf(<span class="string">":"</span>, index);</span><br><span class="line">    <span class="comment">// 判断下,得到 需关闭程序+: 的头尾 下标</span></span><br><span class="line">    <span class="keyword">if</span> (beforeIndex &lt; <span class="number">0</span>) beforeIndex = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">if</span> (afterIndex &lt; <span class="number">0</span>) afterIndex = nowAs.length();</span><br><span class="line">    <span class="keyword">else</span> afterIndex++;</span><br><span class="line">    <span class="comment">// 截取</span></span><br><span class="line">    String As = nowAs.substring(<span class="number">0</span>, beforeIndex) + nowAs.substring(afterIndex, nowAs.length());</span><br><span class="line">    <span class="comment">// 判断是否为空</span></span><br><span class="line">    <span class="keyword">if</span> (As.length() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        shellExec(<span class="string">"settings put secure enabled_accessibility_services "</span> + As);</span><br><span class="line">        shellExec(<span class="string">"settings put secure accessibility_enabled 1"</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        shellExec(<span class="string">"settings put secure enabled_accessibility_services ''"</span>);</span><br><span class="line">        shellExec(<span class="string">"settings put secure accessibility_enabled 0"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="执行shell-命令"><a href="#执行shell-命令" class="headerlink" title="执行shell 命令"></a>执行shell 命令</h3><p>简易版</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> String <span class="title">shellExec</span><span class="params">(String cmd)</span> </span>&#123;</span><br><span class="line">        StringBuilder result = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line"><span class="comment">//            Log.i(Tag, "start shell command");</span></span><br><span class="line"></span><br><span class="line">            Runtime runtime = Runtime.getRuntime();</span><br><span class="line">            Process process = runtime.exec(<span class="string">"su"</span>);</span><br><span class="line"></span><br><span class="line">            DataOutputStream os = <span class="keyword">new</span> DataOutputStream(process.getOutputStream());</span><br><span class="line"></span><br><span class="line">            os.write(cmd.getBytes());</span><br><span class="line">            os.writeBytes(<span class="string">"\n"</span>);</span><br><span class="line">            os.flush();</span><br><span class="line">            os.writeBytes(<span class="string">"exit\n"</span>);</span><br><span class="line">            os.flush();</span><br><span class="line"></span><br><span class="line">            BufferedReader successResult = <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> InputStreamReader(process.getInputStream()));</span><br><span class="line">            BufferedReader errorResult = <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> InputStreamReader(process.getErrorStream()));</span><br><span class="line"></span><br><span class="line">            String str;</span><br><span class="line">            <span class="keyword">while</span> ((str = errorResult.readLine()) != <span class="keyword">null</span>) &#123;</span><br><span class="line">                result.append(str + <span class="string">"\n"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">while</span> ((str = successResult.readLine()) != <span class="keyword">null</span>) &#123;</span><br><span class="line">                result.append(str + <span class="string">"\n"</span>);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//            Log.i(Tag, result.toString());</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//            Log.i(Tag, "end shell");</span></span><br><span class="line">            os.close();</span><br><span class="line">            successResult.close();</span><br><span class="line">            errorResult.close();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result.toString();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="静默安装apk"><a href="#静默安装apk" class="headerlink" title="静默安装apk"></a>静默安装apk</h3><ul>
+<li>root 权限</li>
+<li><code>su</code> 下执行</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// shell 运行命令</span></span><br><span class="line">shellExec(<span class="string">"pm install xxx/xxx.apk"</span>);</span><br><span class="line"><span class="comment">// 覆盖安装</span></span><br><span class="line">shellExec(<span class="string">"pm install -r xxx/xxx.apk"</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="调用系统安装apk-需手动点击安装"><a href="#调用系统安装apk-需手动点击安装" class="headerlink" title="调用系统安装apk (需手动点击安装)"></a>调用系统安装apk (需手动点击安装)</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 安装路径</span></span><br><span class="line">String path = <span class="string">"xxx/xxx.apk"</span>;</span><br><span class="line">File file = <span class="keyword">new</span> File(path);</span><br><span class="line"><span class="comment">// 是否存在</span></span><br><span class="line"><span class="keyword">if</span>(file.exists())&#123;</span><br><span class="line">    Uri fileUri = Uri.fromFile(file);</span><br><span class="line">    <span class="comment">// 执行安装</span></span><br><span class="line">    Intent installIntent = <span class="keyword">new</span> Intent(Intent.ACTION_VIEW);</span><br><span class="line">    installIntent.setDataAndType(fileUri, <span class="string">"application/vnd.android.package-archive"</span>);</span><br><span class="line">    installIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);</span><br><span class="line">    <span class="keyword">this</span>.startActivity(installIntent);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Tip"><a href="#Tip" class="headerlink" title="Tip"></a>Tip</h3><ul>
+<li><p>字体单位 用 <code>sp</code></p>
+</li>
+<li><p>常用单位<code>dp</code></p>
+</li>
+</ul>
+
+            
+        </div>
+        <footer class="article-footer">
+            
+                
+    <div id="copyright">
+        <div>
+            <b>原文作者： </b>
+            lecoler
+        </div>
+        <div>
+            <b>原文链接： </b>
+            <a href=" https://lecoler.github.io/2020/02/29/Android-note(1)/" target="_blank"> https://lecoler.github.io/2020/02/29/Android-note(1)/ </a>
+        </div>
+        <div>
+            <b> 版权声明： </b>
+            本博客所有文章除特别声明外，均采用  <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0 </a> 许可协议。转载请注明出处！
+        </div>
+    </div>
+
+
+            
+            <a data-url="https://lecoler.github.io/2020/02/29/Android-note(1)/" data-id="ckp6qde84003d7ilroibr4yo1"
+               class="article-share-link">分享</a>
+            
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li></ul>
+
+        </footer>
+
+    </div>
+
+    
+        
+  <nav class="article-nav">
+    
+      <a href="/2020/03/03/AssemblyScript/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            AssemblyScript 初次使用
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2020/02/21/Android-adb/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">安卓adb调试</div>
+      </a>
+    
+  </nav>
+
+
+    
+
+    
+        
+            <div class="width-full flex-column-center rel" id="donate">
+    <div class="donate-text rel">
+        <span class="flex-column-center abs"><i class="fe fe-heart-o"></i>打赏</span>
+        <span class="abs break-nowrap">欣赏此文？请作者喝杯咖啡！</span>
+    </div>
+    <div class="donate-box flex-center rel">
+        <a id="aliPay" title="支付宝付款码"></a>
+        <a id="weChat" title="微信付款码"></a>
+    </div>
+    <div id="donate-qrBox" class="hidden abs over-hidden hideQR"></div>
+    <img src="/images/zfb.jpg" class="hidden" />
+    <img src="/images/wx.jpg" class="hidden" />
+</div>
+<script>
+    let qr = {
+        aliPay: '/images/zfb.jpg',
+        weChat: '/images/wx.jpg',
+    };
+    let qrBox = $('#donate-qrBox');
+    qrBox.click(() => {
+        qrBox.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', () => {
+            qrBox.addClass('hidden');
+        }).toggleClass('showQR hideQR', 0)
+    });
+    $('#donate>.donate-box>a').click(function () {
+        qrBox.css('background-image', 'url(' + qr[$(this).attr('id')] + ')').unbind('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend').toggleClass('hidden showQR hideQR', 1);
+    });
+</script>
+
+        
+        <div class="directory">
+    <div class="height-full fix" id="directory-list"></div>
+    <div class="fix flex-center active" id="directory-btn">
+        <a title="目录"><i class="fe fe-book"></i></a>
+    </div>
+</div>
+<script>
+    const $html = $('.article-entry').children();
+    const $list = $('#directory-list').empty();
+    const $btn = $('#directory-btn').on('click',()=>{
+        $list.toggleClass('active')
+    })
+    const Tags = ['H1','H2','H3','H4','H5','H6','H7']
+    for(let dom of $html.toArray()){
+        let type
+        if (Tags.some((i, k) => i == $(dom).get(0).tagName && (type = k + 1))) {
+            const id = $(dom).attr('id');
+            const $a = $(`<a href="#${id}" title="${id}" class="block break-ellipsis">${id}</a>`).css({
+                'padding-left': `${(type-1)*0.5}rem`,
+                'font-size': `${1.6 - type * 0.02}rem`,
+                'text-decoration': 'none',
+                'color': '#fff',
+            })
+            $list.append($a);
+        }
+    }
+</script>
+
+        
+    <div id="vcomments"></div>
+    <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+    <script type="text/javascript">
+      new Valine({
+            el: '#vcomments',
+            appId: 'TblyYUGKjeqtAejC6buEAYiw-gzGzoHsz',
+            appKey: 'FoUxsfWPrMCqDswWNoTIO1Dc',
+            placeholder: '回复',
+            avatar: 'retro',
+            visitor: 'true'
+        })
+    </script>
+  
+  
+        <script>
+    const items = $('.highlight', '.article-entry');
+    const list = items && items.toArray();
+    for (let item of list) {
+        let copyText;
+        const code = item.getElementsByClassName('code')[0];
+        if (code) {
+            copyText = code.innerText;
+        }
+        const copyBtn = $('<button>复制</button>');
+        copyBtn.css({
+            position: 'absolute',
+            right: '10px',
+            top: '10px',
+            cursor: 'pointer'
+        });
+        copyBtn.on('click', function () {
+            if (copyText) {
+                const dom = $(`<textarea >${copyText}</textarea>`);
+                dom.css({
+                    opacity: 0,
+                    position: 'absolute',
+                    width: '1px',
+                    height: '1px'
+                });
+                this.appendChild(dom.get(0));
+                dom.select();
+                !document.execCommand('Copy') && alert('抱歉，浏览器不支持复制功能');
+                dom.remove();
+            }
+        })
+        item.appendChild(copyBtn.get(0));
+    }
+</script>
+    
+
+</article>
+
+
+
+
+</section>
+    <footer class="footer">
+  <div class="outer">
+    <div class="float-right">
+      <ul class="list-inline">
+    <li>
+        <i class="fe fe-bar-chart"></i>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>
+        </span>
+    </li>
+    <li>
+        <i class="fe fe-smile-alt"></i>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>
+        </span>
+    </li>
+</ul>
+
+    </div>
+    <ul class="list-inline">
+      <li>&copy; 2017 - 2021 lecoler博客</li>
+      <li>由 <a href="http://hexo.io/" target="_blank">Hexo</a> 驱动</li>
+      <li>自制主题 - zero 是基于 <a href="https://github.com/zhwangart/hexo-theme-ocean" target="_blank">Ocean</a> 二次开发</li>
+    </ul>
+    </ul>
+  </div>
+</footer>
+
+</main>
+<aside class="sidebar">
+    <button class="navbar-toggle"></button>
+
+<nav class="navbar">
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">主页</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/archives">归档</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/categories">分类</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tags">标签</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">关于</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="搜索"><i class="fe fe-search"></i>搜索</a>
+    </li>
+  </ul>
+</nav>
+
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+        <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+          <i class="fe fe-feed"></i>
+        </a>
+      
+    </li>
+  </ul>
+</nav>
+
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="搜索关键字...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+
+</div>
+
+</aside>
+<script src="/js/lazyload.min.js"></script>
+<script src="/js/zero.js"></script>
+
+    <script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+    <script src="/js/search.js"></script>
+
+
+
+    <script src="https://cdn.bootcss.com/canvas-nest.js/2.0.4/canvas-nest.js"
+            color="0,0,0"
+            opacity='0.5'
+            zIndex="-1"
+            count="20"></script>
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+</body>
+</html>
